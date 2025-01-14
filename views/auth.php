@@ -1,3 +1,11 @@
+<?php
+
+$_SESSION['auth_error']
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +20,7 @@
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <a href="index.html" class="text-2xl font-bold text-indigo-600">Youdemy</a>
+                <a href="index.html" class="text-2xl font-bold  text-slate-800">Youdemy</a>
             </div>
         </div>
     </nav>
@@ -34,8 +42,10 @@
 
             <!-- Login Form -->
             <div id="loginForm" class="p-8">
-                <form class="space-y-6">
+                <h1 class="">test</h1>
+                <form class="space-y-6" action="handleAuth" method="POST">
                     <div>
+                        <input type="login" name="login" >
                         <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
                         <input type="email" id="email" name="email" required
                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
@@ -48,13 +58,7 @@
                     </div>
 
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" id="remember-me" name="remember-me"
-                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">
-                                Remember me
-                            </label>
-                        </div>
+                      
 
                         <div class="text-sm">
                             <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
@@ -70,27 +74,7 @@
                         </button>
                     </div>
 
-                    <div class="mt-6">
-                        <div class="relative">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="w-full border-t border-gray-300"></div>
-                            </div>
-                            <div class="relative flex justify-center text-sm">
-                                <span class="px-2 bg-white text-gray-500">Or continue with</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 grid grid-cols-2 gap-3">
-                            <button type="button"
-                                    class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                                <img class="h-5 w-5 mr-2" src="/api/placeholder/20/20" alt="Google"> Google
-                            </button>
-                            <button type="button"
-                                    class="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                                <img class="h-5 w-5 mr-2" src="/api/placeholder/20/20" alt="Facebook"> Facebook
-                            </button>
-                        </div>
-                    </div>
+                   
                 </form>
             </div>
 

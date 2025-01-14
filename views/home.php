@@ -13,13 +13,13 @@
             <div class="flex h-16 items-center justify-between">
                 <div class="text-2xl font-bold text-slate-800">Youdemy</div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Browse</a>
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Teach</a>
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Enterprise</a>
+                    <a href="courses" class="text-slate-600 hover:text-slate-900">COURSES</a>
+                    <a href="courses" class="text-slate-600 hover:text-slate-900">Teach</a>
+                    <a href="dash" class="text-slate-600 hover:text-slate-900">My DASHBOARD</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Sign In</a>
-                    <a href="#" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700">
+                    <a href="auth" class="text-slate-600 hover:text-slate-900">Sign In</a>
+                    <a href="" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700">
                         Start Learning
                     </a>
                 </div>
@@ -76,7 +76,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-bold text-gray-900">Featured Courses</h2>
-        <a href="#" class="text-indigo-600 hover:text-indigo-700">View All &rarr;</a>
+        <a href="courses" class="text-indigo-600 hover:text-indigo-700">View All &rarr;</a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Course Card -->
@@ -94,11 +94,10 @@
                 <div class="bg-yellow-100 text-yellow-600 text-sm px-4 py-2 rounded">Views: 2,345</div>
             </div>
             <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-                View Details
+              <a href="details">View Details</a>  
             </button>
         </div>
 
-        <!-- Duplicate the card structure for more courses -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h3 class="text-xl font-bold mb-4">Python for Beginners</h3>
             <div class="flex flex-wrap gap-2 mb-4">

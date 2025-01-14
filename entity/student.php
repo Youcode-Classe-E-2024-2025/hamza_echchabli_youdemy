@@ -1,15 +1,16 @@
 <?php
 
 namespace Entity;
-
   use Entity\User;
 
-  class Admin extends User{
+  class Student extends User{
 
     public function __construct(int $id, string $name, string $email, string $password ,int $state) {
-        parent::__construct($id, $name, $email, $password, 'admin' , $state);
+
+        parent::__construct($id, $name, $email, $password, 'student' , $state);
+
     }
 
-
+    
 
   }

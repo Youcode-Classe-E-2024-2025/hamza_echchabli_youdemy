@@ -8,12 +8,15 @@ class User {
     private string $password;
     private string $role;
 
-    public function __construct(int $id, string $name, string $email, string $password, string $role) {
+    private int $state ;
+
+    public function __construct(int $id, string $name, string $email, string $password, string $role ,int $state) {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
+        $this->state = $state;
     }
 
     public function getId(): int {
@@ -36,7 +39,9 @@ class User {
         return $this->role;
     }
 
-
+    public function getState(): string {
+        return $this->state;
+    }
     
 
    
