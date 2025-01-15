@@ -24,14 +24,14 @@
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="text-2xl font-bold text-indigo-600">Youdemy</div>
+                <div class="">  <a href="/" class="text-2xl font-bold  text-slate-800">Youdemy</a></div>
                 <div class="hidden md:flex space-x-4">
                     <a href="#" class="text-gray-600 hover:text-gray-900">Dashboard</a>
                     <a href="#" class="text-gray-600 hover:text-gray-900">Mes cours</a>
                     <a href="#" class="text-gray-600 hover:text-gray-900">Profile</a>
                 </div>
                 <div class="flex space-x-4">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-700">Logout</a>
+                    <a href="handleAuth" class="text-indigo-600 hover:text-indigo-700">Logout</a>
                 </div>
             </div>
         </div>

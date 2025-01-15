@@ -16,6 +16,37 @@ class UserModel {
         $this->connection = new DB();
     }
 
+    public function create($name, $email, $password, $role) {
+        $state = ($role === "teacher") ? 0 : 1;
+    
+        try {
+            // Attempt to insert the user into the database
+            DB::query(
+                "INSERT INTO users (name, email, password, role, state) 
+                 VALUES (:name, :email, :password, :role, :state)",
+                [
+                    ':name' => $name,
+                    ':email' => $email,
+                    ':password' => $password,
+                    ':role' => $role,
+                    ':state' => $state
+                ]
+            );
+    
+            // Return true if the insertion was successful
+            return true;
+    
+        } catch (\Exception $e) {
+            // Check if the exception is due to a duplicate email
+            if (str_contains($e->getMessage(), 'duplicate key value violates unique constraint')) {
+                return false; // Email already exists
+            } else {
+                // Re-throw other exceptions for debugging or logging
+                throw $e;
+            }
+        }
+    }
+    
     public function getUserByEmail(string $email)  {
         $stmt = $this->connection->query("SELECT * FROM users WHERE email = :email" ,['email' => $email]);
         
@@ -35,6 +66,6 @@ class UserModel {
                     return null;
             }
         }
-        return 'wrong';
+        
     }
 }

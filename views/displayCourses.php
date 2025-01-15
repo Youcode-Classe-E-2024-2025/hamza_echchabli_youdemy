@@ -18,7 +18,7 @@
     margin: 0 auto;
     max-width: 1280px; /* Example max width */
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     gap: 1rem;
 }
 .sticky-parent {
@@ -117,7 +117,7 @@
         
 
         <div class="sticky-header">
-            <div class="flex-container">
+            <!-- <div class="flex-container">
                 <div class="flex gap-4">
                     <select class="select">
                         <option value="">All Categories</option>
@@ -132,7 +132,7 @@
                         <option value="rating">Rating</option>
                         <option value="newest">Newest</option>
                     </select>
-                </div>
+                </div> -->
                 <div class="search-container">
                     <input type="text" placeholder="Search courses..." />
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -145,153 +145,41 @@
 
         <!-- Courses Grid -->
         <div class="max-w-7xl mx-auto px-4 py-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Course Card -->
-                <article class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="aspect-video bg-slate-100"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Full-Stack Web Development</h3>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">JavaScript</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">React</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">Node.js</span>
-                        </div>
-                        <div class="space-y-3 mb-4">
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Category: Development
-                            </p>
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Creator: Jane Smith
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-green-50 text-green-600 text-sm px-3 py-1 rounded-full">1,234 Students</span>
-                            <span class="bg-amber-50 text-amber-600 text-sm px-3 py-1 rounded-full">2,345 Views</span>
-                        </div>
-                        <button class="w-full bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                            View Details
-                        </button>
+        <div class="max-w-7xl mx-auto px-4 py-8">
+    <div id="courseContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+   
+        <?php foreach ($courses as $course): ?>
+            <article class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                <div class="aspect-video bg-slate-100"></div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4"><?php echo htmlspecialchars($course['titrecour']); ?></h3>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <!-- Display course tags, if any -->
+                    
                     </div>
-                </article>
+                    <div class="space-y-3 mb-4">
+                        <p class="text-slate-600 text-sm flex items-center gap-2">
+                            <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
+                            Category: <?php echo htmlspecialchars($course['categorie_id']); ?>
+                        </p>
+                        <p class="text-slate-600 text-sm flex items-center gap-2">
+                            <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
+                            Creator: <?php echo htmlspecialchars($course['user_id']); ?>
+                        </p>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-green-50 text-green-600 text-sm px-3 py-1 rounded-full">444 Students</span>
+                        <span class="bg-amber-50 text-amber-600 text-sm px-3 py-1 rounded-full">555 Views</span>
+                    </div>
+                    <a href="details?id=<?php echo $course['idcour'];?>" class="w-full bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
+                        View Details
+                    </a>
+                </div>
+            </article>
+        <?php endforeach; ?>
+    </div>
+</div>
 
-                <article class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="aspect-video bg-slate-100"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Full-Stack Web Development</h3>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">JavaScript</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">React</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">Node.js</span>
-                        </div>
-                        <div class="space-y-3 mb-4">
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Category: Development
-                            </p>
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Creator: Jane Smith
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-green-50 text-green-600 text-sm px-3 py-1 rounded-full">1,234 Students</span>
-                            <span class="bg-amber-50 text-amber-600 text-sm px-3 py-1 rounded-full">2,345 Views</span>
-                        </div>
-                        <button class="w-full bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                            View Details
-                        </button>
-                    </div>
-                </article>
-
-                <article class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="aspect-video bg-slate-100"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Full-Stack Web Development</h3>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">JavaScript</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">React</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">Node.js</span>
-                        </div>
-                        <div class="space-y-3 mb-4">
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Category: Development
-                            </p>
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Creator: Jane Smith
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-green-50 text-green-600 text-sm px-3 py-1 rounded-full">1,234 Students</span>
-                            <span class="bg-amber-50 text-amber-600 text-sm px-3 py-1 rounded-full">2,345 Views</span>
-                        </div>
-                        <button class="w-full bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                            View Details
-                        </button>
-                    </div>
-                </article>
-                <article class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="aspect-video bg-slate-100"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Full-Stack Web Development</h3>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">JavaScript</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">React</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">Node.js</span>
-                        </div>
-                        <div class="space-y-3 mb-4">
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Category: Development
-                            </p>
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Creator: Jane Smith
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-green-50 text-green-600 text-sm px-3 py-1 rounded-full">1,234 Students</span>
-                            <span class="bg-amber-50 text-amber-600 text-sm px-3 py-1 rounded-full">2,345 Views</span>
-                        </div>
-                        <button class="w-full bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                            View Details
-                        </button>
-                    </div>
-                </article>
-                <article class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="aspect-video bg-slate-100"></div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-slate-900 mb-4">Full-Stack Web Development</h3>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">JavaScript</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">React</span>
-                            <span class="bg-blue-50 text-blue-600 text-sm px-3 py-1 rounded-full">Node.js</span>
-                        </div>
-                        <div class="space-y-3 mb-4">
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Category: Development
-                            </p>
-                            <p class="text-slate-600 text-sm flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                                Creator: Jane Smith
-                            </p>
-                        </div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="bg-green-50 text-green-600 text-sm px-3 py-1 rounded-full">1,234 Students</span>
-                            <span class="bg-amber-50 text-amber-600 text-sm px-3 py-1 rounded-full">2,345 Views</span>
-                        </div>
-                        <button class="w-full bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                            View Details
-                        </button>
-                    </div>
-                </article>
-                
-                <!-- More course cards here -->
-            </div>
         </div>
 
         <!-- Pagination -->

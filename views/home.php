@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +14,26 @@
     <nav class="bg-white border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-6">
             <div class="flex h-16 items-center justify-between">
-                <div class="text-2xl font-bold text-slate-800">Youdemy</div>
+                <div class="">
+                <a href="/" class="text-2xl font-bold  text-slate-800">Youdemy</a>
+                </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="courses" class="text-slate-600 hover:text-slate-900">COURSES</a>
                     <a href="courses" class="text-slate-600 hover:text-slate-900">Teach</a>
-                    <a href="dash" class="text-slate-600 hover:text-slate-900">My DASHBOARD</a>
+                    <a href="Dash" class="text-slate-600 hover:text-slate-900">My DASHBOARD</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="auth" class="text-slate-600 hover:text-slate-900">Sign In</a>
+
+                <?php
+                if (isset($_SESSION['user'])) {
+                   echo ' <a href="handleAuth" class="text-slate-600 hover:text-slate-900">Sign Out</a>';
+                } else {
+                   echo ' <a href="auth" class="text-slate-600 hover:text-slate-900">Sign In</a>'; 
+                }
+                
+                   
+
+                    ?>
                     <a href="" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700">
                         Start Learning
                     </a>

@@ -1,5 +1,7 @@
 <?php
 
+use Controller\CourseController;
+
 require_once  '../core/autoloader.php';
 require_once '../core/router.php';
 
@@ -7,6 +9,8 @@ session_start();
 
 use core\Router;
 use Controller\AuthController;
+
+// use Controller\CourseController;
 
    
 
@@ -55,9 +59,25 @@ $router->addRoute('GET', 'Dash', function() {
 
 
 
+// $router->addRoute('GET', 'courses', function() {
+//     $controller = new CourseController();
+
+//     $controller->handlecourses();
+// });
+
 $router->addRoute('GET', 'courses', function() {
-    require_once '../views/displayCourses.php';
+    $controller = new CourseController();
+
+    // Check if category ID is provided in the query string
+    if (isset($_GET['id'])) {
+        // If a category ID is present, list courses by category
+        $controller->listCoursesByCategory($_GET['id']);
+    } else {
+        // Otherwise, list all courses
+        $controller->listCourses();
+    }
 });
+
 
 
 $router->addRoute('POST', 'handleAuth', function() {

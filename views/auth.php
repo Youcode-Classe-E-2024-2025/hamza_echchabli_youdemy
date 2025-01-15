@@ -1,6 +1,8 @@
 <?php
 
-$_SESSION['auth_error']
+if (isset($_SESSION['user'])) {
+ header('Location: /');
+}
 
 
 ?>
@@ -20,7 +22,7 @@ $_SESSION['auth_error']
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <a href="index.html" class="text-2xl font-bold  text-slate-800">Youdemy</a>
+                <a href="/" class="text-2xl font-bold  text-slate-800">Youdemy</a>
             </div>
         </div>
     </nav>
@@ -28,7 +30,16 @@ $_SESSION['auth_error']
     <!-- Auth Container -->
     <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full bg-white rounded-lg shadow-md">
-            <!-- Tab Navigation -->
+            <?php       
+              if (isset($_SESSION['auth_error'])) {
+
+                echo "<div class='m-auto text-center w-full'>".$_SESSION['auth_error']."</div>";
+              
+            } 
+                                                      
+                 
+            ?>
+           
             <div class="flex border-b">
                 <button onclick="switchTab('login')" id="loginTab" 
                         class="w-1/2 py-4 px-6 text-center border-b-2 border-indigo-600 text-indigo-600 font-medium">
@@ -40,7 +51,7 @@ $_SESSION['auth_error']
                 </button>
             </div>
 
-            <!-- Login Form -->
+            
             <div id="loginForm" class="p-8">
                 <h1 class="">test</h1>
                 <form class="space-y-6" action="handleAuth" method="POST">
@@ -80,70 +91,56 @@ $_SESSION['auth_error']
 
             <!-- Register Form -->
             <div id="registerForm" class="p-8 hidden">
-                <form class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">I want to:</label>
-                        <div class="mt-2 space-x-4">
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="role" value="student" checked
-                                       class="form-radio text-indigo-600">
-                                <span class="ml-2">Learn</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="radio" name="role" value="teacher"
-                                       class="form-radio text-indigo-600">
-                                <span class="ml-2">Teach</span>
-                            </label>
-                        </div>
-                    </div>
+            <form class="space-y-6" action="handleAuth" method="POST">
+    <div>
+        <label class="block text-sm font-medium text-gray-700">I want to:</label>
+        <div class="mt-2 space-x-4">
+            <input type="text" name="register" value="register" class="hidden">
+            <label class="inline-flex items-center">
+                <input type="radio" name="role" value="student" checked class="form-radio text-indigo-600">
+                <span class="ml-2">Learn</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="role" value="teacher" class="form-radio text-indigo-600">
+                <span class="ml-2">Teach</span>
+            </label>
+        </div>
+    </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">First Name</label>
-                            <input type="text" required
-                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Last Name</label>
-                            <input type="text" required
-                                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        </div>
-                    </div>
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">User Name</label>
+            <input type="text" name="username" required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+    </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Email address</label>
-                        <input type="email" required
-                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Email address</label>
+        <input type="email" name="email" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+    </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Password</label>
-                        <input type="password" required
-                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" name="password" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+    </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                        <input type="password" required
-                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Confirm Password</label>
+        <input type="password" name="confirm_password" required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+    </div>
 
-                    <div class="flex items-center">
-                        <input type="checkbox" required
-                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                        <label class="ml-2 block text-sm text-gray-700">
-                            I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-500">Terms of Service</a>
-                            and <a href="#" class="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
-                        </label>
-                    </div>
+    <div>
+        <button type="submit"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Create Account
+        </button>
+    </div>
+</form>
 
-                    <div>
-                        <button type="submit"
-                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Create Account
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>

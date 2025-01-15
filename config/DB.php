@@ -43,7 +43,7 @@ class DB {
             return $statement;
         } catch (\PDOException $e) {
             
-            throw new \Exception("Query execution failed: " . $e->getMessage());
+            return $e->getMessage();
         }
     }
 }
