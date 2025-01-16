@@ -23,14 +23,8 @@ class AuthController {
               
         if (is_object($user) && $password == $user->getPassword()) { 
 
-            // session_start();
-            
-            // $_SESSION['user'] = serialize($user);
-
-
-            
-            return $user;
-        
+          return $user;
+          
         }
 
         return null;

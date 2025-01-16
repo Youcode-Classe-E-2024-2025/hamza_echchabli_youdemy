@@ -18,7 +18,7 @@
                 <a href="/" class="text-2xl font-bold  text-slate-800">Youdemy</a>
                 </div>
                 <div class="hidden md:flex space-x-8">
-                    <a href="courses" class="text-slate-600 hover:text-slate-900">COURSES</a>
+                    <a href="courses?page=0" class="text-slate-600 hover:text-slate-900">COURSES</a>
                     <a href="courses" class="text-slate-600 hover:text-slate-900">Teach</a>
                     <a href="Dash" class="text-slate-600 hover:text-slate-900">My DASHBOARD</a>
                 </div>

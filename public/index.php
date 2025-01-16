@@ -27,11 +27,11 @@ $router->addRoute('GET', 'auth', function() {
 
 $router->addRoute('GET', 'profile', function() {
     require_once '../views/adminDash.php';
-}); // add controller 
+}); 
 
-$router->addRoute('GET', 'details', function() {
-    require_once '../views/coursDetails.php';
-});
+// $router->addRoute('GET', 'details', function() {
+//     require_once '../views/coursDetails.php';
+// });
 
 
 $router->addRoute('GET', 'Dash', function() {
@@ -68,13 +68,12 @@ $router->addRoute('GET', 'Dash', function() {
 $router->addRoute('GET', 'courses', function() {
     $controller = new CourseController();
 
-    // Check if category ID is provided in the query string
     if (isset($_GET['id'])) {
-        // If a category ID is present, list courses by category
-        $controller->listCoursesByCategory($_GET['id']);
+
+        $controller->getCourseById($_GET['id']);
     } else {
         // Otherwise, list all courses
-        $controller->listCourses();
+        $controller->listCourses($_GET['page']);
     }
 });
 

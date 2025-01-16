@@ -102,10 +102,16 @@
                     <a href="#" class="text-slate-600 hover:text-slate-900">Enterprise</a>
                 </div>
                 <div class="flex items-center gap-4">
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Sign In</a>
-                    <a href="#" class="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 whitespace-nowrap">
-                        Start Learning
-                    </a>
+                <?php
+                if (isset($_SESSION['user'])) {
+                   echo ' <a href="handleAuth" class="text-slate-600 hover:text-slate-900">Sign Out</a>';
+                } else {
+                   echo ' <a href="auth" class="text-slate-600 hover:text-slate-900">Sign In</a>'; 
+                }
+                
+                   
+
+                    ?>
                 </div>
             </div>
         </div>
@@ -182,17 +188,57 @@
 
         </div>
 
+        <?php
+ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        ?>
+
         <!-- Pagination -->
         <div class="max-w-7xl mx-auto px-4 py-8">
             <div class="m-auto flex justify-evenly items-center gap-2 bgBlach">
-                <button class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <a  href="?page=<?=$current_page-1?>" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" >
                     Previous
-                </button>
-                <button class="px-4 py-2 bg-slate-800 text-white rounded-lg">1</button>
-                <button class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">2</button>
-                <button class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">3</button>
-                <button class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">Next</button>
+        </a>
+                <?php
+
+                  $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                  for ($i = 0; $i <= $count['count']-1; $i++) {
+                    if ($i === $current_page) {
+                        // Highlight the current page button
+                        echo '<button class="px-4 py-2 bg-slate-800 text-white rounded-lg">' . $i . '</button>';
+                    } else {
+                        // Regular button with a link to the page
+                        // echo '<button onclick="window.location.href=\'?page=' . $i . '\'" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">' . $i . '</button>';
+                        echo '<a href="?page=' . $i . '" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">' . $i . '</a>';
+                 
+                   
+                    }
+                }
+
+
+
+
+                ?>
+                <a  href="?page=<?=$current_page+1?>" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" >
+                    Next
+        </a>
             </div>
+
+            <?php
+  
+
+
+//             for ($i = 1; $i <= $count['count']; $i++) {
+//     if ($i === $current_page) {
+//         // Highlight the current page button
+//         echo '<button class="px-4 py-2 bg-slate-800 text-white rounded-lg">' . $i . '</button>';
+//     } else {
+//         // Regular button with a link to the page
+//         echo '<button onclick="window.location.href=\'?page=' . $i . '\'" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">' . $i . '</button>';
+//     }
+// }
+
+
+?>
         </div>
     </main>
 

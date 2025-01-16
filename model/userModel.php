@@ -7,6 +7,8 @@ use Entity\Admin;
 use Entity\Teacher;
 use Entity\Student;
 
+use Controller\UserController;
+
 class UserModel {
 
 
@@ -33,7 +35,8 @@ class UserModel {
                 ]
             );
     
-            // Return true if the insertion was successful
+           
+
             return true;
     
         } catch (\Exception $e) {
@@ -52,6 +55,7 @@ class UserModel {
         
 
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        UserController::$role= $user['role'];
 
 
         if ($user) {
@@ -68,4 +72,19 @@ class UserModel {
         }
         
     }
+
+
+    public function getValidate() {
+        $stmt = $this->connection->query("SELECT * FROM users WHERE state = 1");
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    // Function to get non-validated users (is_valid = 0)
+    public function getNonValidate() {
+        $stmt = $this->connection->query("SELECT * FROM users WHERE state = 0");
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+
 }

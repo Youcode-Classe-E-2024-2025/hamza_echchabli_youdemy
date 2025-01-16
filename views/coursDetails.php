@@ -31,23 +31,22 @@
         </div>
     </nav>
 
-    <!-- Course Details Section -->
+      
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div class="bg-white shadow rounded-lg p-6">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">Introduction to React</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-4"><?php   echo  $courses[0]['titrecour'] ;?></h1>
             <div class="flex flex-wrap gap-4 mb-6">
                 <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">#Frontend</span>
                 <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">#JavaScript</span>
-                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-md text-sm font-medium">Category: Web Development</span>
-                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-md text-sm font-medium">Creator: John Doe</span>
+                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-md text-sm font-medium">Category:<?php   echo  $courses[0]['categorie_id'] ;?></span>
+                <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-md text-sm font-medium">Creator: <?php   echo  $courses[0]['user_id'] ;?></span>
             </div>
 
             <!-- Course Description -->
             <div class="mb-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-2">Course Description</h2>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">Description</h2>
                 <p class="text-gray-600 leading-relaxed">
-                    Learn the fundamentals of React, one of the most popular libraries for building modern, scalable web applications.
-                    This course covers core concepts like components, state, and props, along with advanced topics like hooks and context.
+                    <?php   echo $courses[0]['descriptioncour']; ?>
                 </p>
             </div>
 
@@ -64,11 +63,9 @@
             <!-- Course Content -->
             <div class="mb-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">What You'll Learn</h2>
-                <ul class="list-disc list-inside text-gray-600">
-                    <li>Understand React fundamentals: components, props, and state.</li>
-                    <li>Build scalable, dynamic web applications with React.</li>
-                    <li>Use advanced features like hooks and context for state management.</li>
-                </ul>
+                <p class="text-gray-600 leading-relaxed">
+                    <?php   echo $courses[0]['details']; ?>
+                </p>
             </div>
 
             <!-- Enroll Button -->
