@@ -29,6 +29,13 @@
             border-radius: 0.5rem;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
+  
+        .btnColor{
+            background-color: rgba(239, 121, 219);;
+        }
+        table tbody tr td{
+            height:40px ;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-50">
@@ -67,8 +74,7 @@
         </tr>
     </thead>
     <tbody>
-        <!-- Display Non-Validated Users -->
-        <?php var_dump($NonValide) ?>
+        
         <?php if (!empty($NonValide)): ?>
             <?php foreach ($NonValide as $user): ?>
                 <tr class="border-t border-gray-200">
@@ -77,8 +83,8 @@
                     <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['role']) ?></td>
                     <td class="px-6 py-4 text-sm text-gray-800">Inactive</td>
                     <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
-                        <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="(<?= $user['id'] ?>" >Activate</a>
-                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700"  href="(<?= $user['id'] ?>" >Delete</a>
+                        <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="manage?action=activer&id=<?php echo $user['id'] ;?>" >Activate</a>
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700"  href="manage?action=banne&id=<?php echo $user['id'] ;?>" >Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -115,9 +121,9 @@
                     <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['role']) ?></td>
                     <td class="px-6 py-4 text-sm text-gray-800">active</td>
                     <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
-                        <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="(<?= $user['id'] ?>">Activer</a>
-                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="(<?= $user['id'] ?>" >Suspendre</a> 
-                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="(<?= $user['id'] ?>" >Supprimer</a>
+                        <!-- <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="manage?action=activer&id=<?php echo $user['id'] ;?>">Activer</a> -->
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="manage?action=suspende&id=<?php echo $user['id'] ;?>" >Suspendre</a> 
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md btnColor" href="manage?action=banne&id=<?php echo $user['id'] ;?>" >banne</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -131,8 +137,25 @@
 
         </div>
 
-        <!-- Gestion des Contenus -->
+        <!-- Gestion des categorie -->
         <div class="bg-white shadow rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des categories</h2>
+            <p class="text-gray-700 mb-4">Ajouter des categories en masse pour simplifier la gestion des cours.</p>
+            <form action="#" method="POST">
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label for="tags" class="block text-sm font-medium text-gray-700">Nouveaux Tags</label>
+                        <textarea id="tags" name="tags" rows="4" class="mt-1 block w-full p-2 border rounded-lg" placeholder="categorie 1, categorie 2, categorie 3, ..." required></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+                    Ajouter des categories
+                </button>
+            </form>
+        </div>
+
+         <!-- Gestion des tag -->
+         <div class="bg-white shadow rounded-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Contenus</h2>
             <p class="text-gray-700 mb-4">Ajouter des tags en masse pour simplifier la gestion des cours.</p>
             <form action="#" method="POST">
@@ -147,12 +170,7 @@
                 </button>
             </form>
         </div>
-<?php
 
- echo var_dump($data);
-
-
-?>
         <!-- Statistiques -->
         <div class="bg-white shadow rounded-lg p-6">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Statistiques Globales</h2>

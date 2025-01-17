@@ -17,6 +17,34 @@ class UserController {
         self::$userModel = new UserModel();
         self::$courseModel = new CourseModel();
     }
+    public function manageUsers() {
+        if (isset($_GET['action']) && isset($_GET['id'])) {
+            $userId = (int) $_GET['id'];
+            $action = $_GET['action'];
+    
+            switch ($action) {
+                case 'activer':
+                    $this->validateAccount($userId);
+                    
+                    break;
+                case 'suspende':
+                    $this->suspendUser($userId);
+                    break;
+                case 'banne':
+                    $this->banUser($userId);
+                    break;
+                default:
+                    // Handle invalid action if needed
+                    echo "Invalid action!";
+                    break;
+            }
+            header("Location: /Dash"); // Change this to the correct URL for your dashboard
+              exit;
+        } else {
+            // Default view logic if no action is set
+            echo "No action specified.";
+        }
+    }
 
     public function getDash() {
         if (!isset(self::$role)) {
@@ -65,60 +93,50 @@ class UserController {
     }
 
 
-    public function manageUsers(){
-
-        
+   
 
 
 
 
 
+
+
+
+
+    public function banUser(int $userId) {
+        try {
+            $result = self::$userModel->banUser($userId);
+            echo $result;
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
+    public function unbanUser(int $userId) {
+        try {
+            $result = self::$userModel->unbanUser($userId);
+            echo $result;
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 
+    public function validateAccount(int $userId) {
+        try {
+            $result = self::$userModel->validateAccount($userId);
+            echo $result;
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 
-
-
-
-
-
-
-
-    // New Methods for Managing Users
-    // public function banUser(int $userId) {
-    //     try {
-    //         $result = self::$userModel->banUser($userId);
-    //         echo $result;
-    //     } catch (\Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //     }
-    // }
-
-    // public function unbanUser(int $userId) {
-    //     try {
-    //         $result = self::$userModel->unbanUser($userId);
-    //         echo $result;
-    //     } catch (\Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //     }
-    // }
-
-    // public function validateAccount(int $userId) {
-    //     try {
-    //         $result = self::$userModel->validateAccount($userId);
-    //         echo $result;
-    //     } catch (\Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //     }
-    // }
-
-    // public function suspendUser(int $userId) {
-    //     try {
-    //         $result = self::$userModel->suspendUser($userId);
-    //         echo $result;
-    //     } catch (\Exception $e) {
-    //         echo "Error: " . $e->getMessage();
-    //     }
-    // }
+    public function suspendUser(int $userId) {
+        try {
+            $result = self::$userModel->suspendUser($userId);
+            echo $result;
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 }
 ?>

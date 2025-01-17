@@ -52,6 +52,10 @@
   --tw-contain-style:  ;
 }
 
+/* .tr{
+  background-color: rgba(239, 121, 219, 0.1);
+} */
+
 ::backdrop {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
