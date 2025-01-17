@@ -21,6 +21,9 @@
         .bgSuccess {
             background-color: #10B981; /* Green */
         }
+        .mA-1{
+            margin: 4px;
+        }
         .card {
             padding: 1.5rem;
             border-radius: 0.5rem;
@@ -54,57 +57,78 @@
         <div class="bg-white shadow rounded-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Validation des Comptes Enseignants</h2>
             <table class="min-w-full bg-white border border-gray-300 rounded-lg">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Nom</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Email</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Date de Demande</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example Row -->
-                    <tr class="border-t border-gray-200">
-                        <td class="px-6 py-4 text-sm text-gray-800">John Doe</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">john.doe@example.com</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">2025-01-10</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
-                            <button class="bgPrimary text-white px-3 py-1 rounded-md hover:bg-indigo-700">Valider</button>
-                            <button class="bgDanger text-white px-3 py-1 rounded-md hover:bg-red-700">Refuser</button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows here -->
-                </tbody>
-            </table>
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Nom</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Email</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Rôle</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">State</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Display Non-Validated Users -->
+        <?php var_dump($NonValide) ?>
+        <?php if (!empty($NonValide)): ?>
+            <?php foreach ($NonValide as $user): ?>
+                <tr class="border-t border-gray-200">
+                    <td class="px-6 h-fit py-4 text-sm text-gray-800"><?= htmlspecialchars($user['name']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['email']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['role']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800">Inactive</td>
+                    <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
+                        <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="(<?= $user['id'] ?>" >Activate</a>
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700"  href="(<?= $user['id'] ?>" >Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5" class="px-6 py-4 text-sm text-gray-800 text-center">No non-validated users found.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
         </div>
 
         <!-- Gestion des Utilisateurs -->
         <div class="bg-white shadow rounded-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Utilisateurs</h2>
             <table class="min-w-full bg-white border border-gray-300 rounded-lg">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Nom</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Email</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Rôle</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example Row -->
-                    <tr class="border-t border-gray-200">
-                        <td class="px-6 py-4 text-sm text-gray-800">Jane Smith</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">jane.smith@example.com</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">Enseignant</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
-                            <button class="bgSuccess text-white px-3 py-1 rounded-md hover:bg-green-700">Activer</button>
-                            <button class="bgDanger text-white px-3 py-1 rounded-md hover:bg-red-700">Suspendre</button>
-                            <button class="bgDanger text-white px-3 py-1 rounded-md hover:bg-red-700">Supprimer</button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows here -->
-                </tbody>
-            </table>
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Nom</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Email</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Rôle</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">State</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Loop through non-validated users -->
+        <?php if (!empty($valide)): ?>
+            <?php foreach ($valide as $user): ?>
+                <tr class="border-t border-gray-200">
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['name']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['email']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['role']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800">active</td>
+                    <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
+                        <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="(<?= $user['id'] ?>">Activer</a>
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="(<?= $user['id'] ?>" >Suspendre</a> 
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="(<?= $user['id'] ?>" >Supprimer</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5" class="px-6 py-4 text-sm text-gray-800 text-center">No non-validated users found.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
         </div>
 
         <!-- Gestion des Contenus -->
@@ -135,22 +159,49 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div class="card bg-green-100 text-green-600">
                     <h3 class="font-semibold">Nombre Total de Cours</h3>
-                    <p class="text-lg">123</p>
+                    <p class="text-lg"><?php echo $number[0] ;?></p>
                 
                 </div>
                 
                 <div class="card bg-blue-100 text-blue-600">
                     <h3 class="font-semibold">Répartition par Catégorie</h3>
-                    <p class="text-lg">Développement: 45, Design: 35, Data Science: 43</p>
+                    <p class="text-lg">
+                        
+                    <!-- Développement: 45, Design: 35, Data Science: 43 -->
+
+                    <?php
+                    foreach ($categorie as $row) {
+                        echo  $row['name'].' : ' . $row['number'] . ' , ';
+                        }
+                    
+                    ?>
+                
+                
+                
+                </p>
                 </div>
                 <div class="card bg-yellow-100 text-yellow-600">
-                    <h3 class="font-semibold">Cours avec le Plus d'Étudiants</h3>
-                    <p class="text-lg">"Développement Web" (987 étudiants)</p>
+                    <h3 class="font-semibold">Top 3 courses</h3>
+                    <p class="text-lg">
+                    <?php
+                    foreach ($courses as $row) {
+                        echo  $row['titrecour'].' : ' . $row['number'] . ' , ';
+                        }
+                    
+                    ?>
+                    </p>
                 </div>
-                <div class="card bg-purple-100 text-purple-600">
+                <!-- <div class="card bg-purple-100 text-purple-600">
                     <h3 class="font-semibold">Top 3 Enseignants</h3>
-                    <p class="text-lg">1. John, 2. Jane, 3. Alice</p>
-                </div>
+                    <p class="text-lg">
+                     <?php
+                    // foreach ($teachers as $row) {
+                    //     echo  $row['name'].' : ' . $row['number'] . ' , ';
+                    //     }
+                    
+                    ?> 
+                    </p>
+                </div> -->
             </div>
         </div>
     </div>

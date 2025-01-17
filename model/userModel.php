@@ -55,7 +55,7 @@ class UserModel {
         
 
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-        UserController::$role= $user['role'];
+        // UserController::setRole($user['role']);
 
 
         if ($user) {
@@ -84,6 +84,48 @@ class UserModel {
         $stmt = $this->connection->query("SELECT * FROM users WHERE state = 0");
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+ //fix this
+    // public function top3Teachers() {
+    //     $stmt = $this->connection->query("SELECT * FROM users WHERE state = 0");
+    //     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    // }
+    public function banUser(int $userId) {
+        try {
+            $this->connection->query("UPDATE users SET banned = TRUE WHERE id = :id", ['id' => $userId]);
+            return "User banned successfully.";
+        } catch (\Exception $e) {
+            return "Error banning user: " . $e->getMessage();
+        }
+    }
+    
+    public function unbanUser(int $userId) {
+        try {
+            $this->connection->query("UPDATE users SET banned = FALSE WHERE id = :id", ['id' => $userId]);
+            return "User unbanned successfully.";
+        } catch (\Exception $e) {
+            return "Error unbanning user: " . $e->getMessage();
+        }
+    }
+    
+    public function validateAccount(int $userId) {
+        try {
+            $this->connection->query("UPDATE users SET state = 1 WHERE id = :id", ['id' => $userId]);
+            return "User account validated successfully.";
+        } catch (\Exception $e) {
+            return "Error validating account: " . $e->getMessage();
+        }
+    }
+    
+    public function suspendUser(int $userId) {
+        try {
+            $this->connection->query("UPDATE users SET state = 0 WHERE id = :id", ['id' => $userId]);
+            return "User account suspended successfully.";
+        } catch (\Exception $e) {
+            return "Error suspending user: " . $e->getMessage();
+        }
+    }
+    
 
 
 

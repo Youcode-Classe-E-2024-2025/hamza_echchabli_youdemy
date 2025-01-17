@@ -9,6 +9,7 @@ session_start();
 
 use core\Router;
 use Controller\AuthController;
+use Controller\UserController;
 
 // use Controller\CourseController;
 
@@ -25,8 +26,12 @@ $router->addRoute('GET', 'auth', function() {
     require_once '../views/auth.php';
 });
 
-$router->addRoute('GET', 'profile', function() {
-    require_once '../views/adminDash.php';
+$router->addRoute('GET', 'manage', function() {
+
+    $controller = new UserController();
+
+     $controller->manageUsers();
+    
 }); 
 
 // $router->addRoute('GET', 'details', function() {
@@ -35,26 +40,12 @@ $router->addRoute('GET', 'profile', function() {
 
 
 $router->addRoute('GET', 'Dash', function() {
-    
-    $res = unserialize($_SESSION['user']);
-                    switch ($res->getRole()) {
-                        case 'admin':
-                            require_once '../views/adminDash.php';
-                            // exit(); 
-                            break;
-                        case 'teacher':
-                            require_once '../views/teacherDash.php';
-                            
-                            break;
+    UserController::setRole();
 
-                        case 'student':
-                            require_once '../views/studentDash.php';
-                            break;
-                           
-                        default:
-                            header('Location: /auth');
-                            break;
-                    }
+     $controller = new UserController();
+
+     $controller->getDash();
+
 });
 
 
