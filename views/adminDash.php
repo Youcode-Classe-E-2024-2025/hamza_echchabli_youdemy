@@ -11,6 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Youdemy</title>
     <link rel="stylesheet" href="../css/output.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+
     <style>
         .bgPrimary {
             background-color: #4F46E5; /* Indigo */
@@ -137,39 +142,39 @@
 
         </div>
 
-        <!-- Gestion des categorie -->
-        <div class="bg-white shadow rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des categories</h2>
-            <p class="text-gray-700 mb-4">Ajouter des categories en masse pour simplifier la gestion des cours.</p>
-            <form action="#" method="POST">
-                <div class="grid grid-cols-1 gap-4">
-                    <div>
-                        <label for="tags" class="block text-sm font-medium text-gray-700">Nouveaux Tags</label>
-                        <textarea id="tags" name="tags" rows="4" class="mt-1 block w-full p-2 border rounded-lg" placeholder="categorie 1, categorie 2, categorie 3, ..." required></textarea>
-                    </div>
-                </div>
-                <button type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
-                    Ajouter des categories
-                </button>
-            </form>
+    <!-- Gestion des catégories -->
+<div class="bg-white shadow rounded-lg p-6 mb-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des catégories</h2>
+    <p class="text-gray-700 mb-4">Ajouter des catégories en masse pour simplifier la gestion des cours.</p>
+    <form action="#" method="POST">
+        <div class="grid grid-cols-1 gap-4">
+            <div>
+                <label for="categories" class="block text-sm font-medium text-gray-700">Nouveaux Tags</label>
+                <input id="categories" name="categories" class="mt-1 block w-full p-2 border rounded-lg" placeholder="Catégorie 1, Catégorie 2, Catégorie 3" required>
+            </div>
         </div>
+        <button type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+            Ajouter des catégories
+        </button>
+    </form>
+</div>
 
-         <!-- Gestion des tag -->
-         <div class="bg-white shadow rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Contenus</h2>
-            <p class="text-gray-700 mb-4">Ajouter des tags en masse pour simplifier la gestion des cours.</p>
-            <form action="#" method="POST">
-                <div class="grid grid-cols-1 gap-4">
-                    <div>
-                        <label for="tags" class="block text-sm font-medium text-gray-700">Nouveaux Tags</label>
-                        <textarea id="tags" name="tags" rows="4" class="mt-1 block w-full p-2 border rounded-lg" placeholder="Tag1, Tag2, Tag3, ..." required></textarea>
-                    </div>
-                </div>
-                <button type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
-                    Ajouter des Tags
-                </button>
-            </form>
+<!-- Gestion des tags -->
+<div class="bg-white shadow rounded-lg p-6 mb-8">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Contenus</h2>
+    <p class="text-gray-700 mb-4">Ajouter des tags en masse pour simplifier la gestion des cours.</p>
+    <form action="#" method="POST">
+        <div class="grid grid-cols-1 gap-4">
+            <div>
+                <label for="tags" class="block text-sm font-medium text-gray-700">Nouveaux Tags</label>
+                <input id="tags" name="tags" class="mt-1 block w-full p-2 border rounded-lg" placeholder="Tag1, Tag2, Tag3" required>
+            </div>
         </div>
+        <button type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+            Ajouter des Tags
+        </button>
+    </form>
+</div>
 
         <!-- Statistiques -->
         <div class="bg-white shadow rounded-lg p-6">
@@ -223,5 +228,37 @@
             </div>
         </div>
     </div>
+
+    <script>
+    // Initialize Tagify for categories
+    const categoriesInput = document.getElementById('categories');
+    new Tagify(categoriesInput, {
+        whitelist: [], // Optionally predefine tags
+        maxTags: 10,   // Limit the number of tags
+        dropdown: {
+            enabled: 0, // Show dropdown suggestions
+        }
+    });
+
+    // Initialize Tagify for tags
+    const tagsInput = document.getElementById('tags');
+
+    new Tagify(tagsInput, {
+        whitelist: [], // Optionally predefine tags
+        maxTags: 10,   // Limit the number of tags
+        dropdown: {
+            enabled: 0, // Show dropdown suggestions
+        }
+    });
+
+
+    function getData() {
+
+        console.log(tagsInput.value);
+        
+        
+    }
+</script>
+
 </body>
 </html>

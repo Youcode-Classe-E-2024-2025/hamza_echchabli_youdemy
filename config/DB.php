@@ -6,6 +6,8 @@ class DB {
     private static $connection;
 
     
+
+    
     private static function getConnection() {
         
         if (!self::$connection) {
@@ -29,6 +31,19 @@ class DB {
         return self::$connection;
     }
 
+    public static function fetch($query, $params = []) {
+        try {
+            $connection = self::getConnection();
+    
+            $statement = $connection->prepare($query);
+            $statement->execute($params);
+    
+            // Fetch the result as an associative array
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return $e->getMessage();
+        }
+    }
     
     public static function query($query, $params = []) {
         try {
