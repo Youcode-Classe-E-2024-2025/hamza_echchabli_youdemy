@@ -108,6 +108,88 @@ class DashController {
 
 
 
+    public function manageCourses()
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
+        
+       
+            $action = $_POST['action'];
+            
+            switch ($action) {
+                case 'add':
+                    $this->addCourse();
+                    break;
+                
+                case 'update':
+                    // Future update course method
+                    $this->updateCourse();
+                    break;
+                
+                default:
+                    echo "Invalid action!";
+                    exit;
+            }
+            
+            header("Location: /Dash"); // Redirect to the dashboard after processing
+            exit;
+        }
+   
+}
+
+public function addCourse()
+{
+    try {
+        // Sanitize and collect form data
+        $titrecour = $_POST['course-title']; 
+        $categorie_id = 2;
+        $descriptioncour = $_POST['course-description'];
+        // $tags = explode(',', filter_input(INPUT_POST, 'course-tags', FILTER_SANITIZE_STRING));
+
+        // Handle file upload
+        if (isset($_FILES['course-content']) && $_FILES['course-content']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = '../uploads/courses/';
+            $fileName = uniqid() . "_" . basename($_FILES['course-content']['name']);
+            $contenucour = $uploadDir . $fileName;
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            if (move_uploaded_file($_FILES['course-content']['tmp_name'], $contenucour)) {
+
+                $user = $user = unserialize($_SESSION['user']); 
+                
+                $user_id= $user->getId();
+
+                $courseId = self::$courseS::createCourse($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id);
+                
+                echo $courseId->fetch();
+                // if ($courseId) {
+                //     // Insert tags into the database
+                //     $tagValues = array_map('trim', $tags);
+                //     Repo\TagRepository::massInsert($tagValues);
+
+                //     echo "Course added successfully!";
+                // } else {
+                //     echo "Failed to add course.";
+                // }
+            } else {
+                echo "File upload failed.";
+            }
+        } else {
+            echo "Invalid file upload.";
+        }
+    } catch (\Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
+
+  
+
+
+
+
+
 
     private function teacherDashData(){
 

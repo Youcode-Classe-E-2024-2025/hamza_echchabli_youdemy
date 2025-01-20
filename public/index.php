@@ -41,6 +41,16 @@ $router->addRoute('GET', 'manageContent', function() {
      $controller->manageContent();
     
 }); 
+$router->addRoute('POST', 'manageCourses', function() {
+
+    $controller = new DashController();
+
+     $controller->manageCourses();
+    
+}); 
+
+
+// manageCourses
 
 // $router->addRoute('GET', 'details', function() {
 //     require_once '../views/coursDetails.php';

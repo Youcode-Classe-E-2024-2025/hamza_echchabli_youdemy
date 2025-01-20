@@ -9,9 +9,9 @@ class CourseRepository {
     // Method to create a new course
     public static function create($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id) {
         try {
-            DB::query(
+            $res =DB::query(
                 "INSERT INTO public.courses (titrecour, descriptioncour, contenucour, user_id, categorie_id) 
-                 VALUES (:titrecour, :descriptioncour, :contenucour, :user_id, :categorie_id)",
+                 VALUES (:titrecour, :descriptioncour, :contenucour, :user_id, :categorie_id) ",
                 [
                     ':titrecour' => $titrecour,
                     ':descriptioncour' => $descriptioncour,
@@ -21,7 +21,7 @@ class CourseRepository {
                 ]
             );
     
-            return true; // Return true if insertion was successful
+            return $res; // Return true if insertion was successful
     
         } catch (\Exception $e) {
             return $e->getMessage(); // Return error message

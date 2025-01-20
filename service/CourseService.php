@@ -11,6 +11,14 @@ class CourseService {
         return CourseRepository::getAllCourses($N);
     }
     // getById
+    // create
+
+
+    public static function createCourse($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id) {
+        return CourseRepository::create($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id);
+    }
+
+
 
     public static function getCourseById($id) {
         return CourseRepository::getById($id);

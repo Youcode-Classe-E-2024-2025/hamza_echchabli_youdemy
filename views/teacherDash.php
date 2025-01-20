@@ -124,8 +124,9 @@
         <!-- Add New Course Section -->
         <div id="create-course" class="bg-white shadow rounded-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Ajouter un Nouveau Cours</h2>
-            <form action="upload_course.php" method="POST" enctype="multipart/form-data">
+<form action="/manageCourses" method="POST" enctype="multipart/form-data">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <input name="action" value="add" hidden>
         <div>
             <label for="course-title" class="block text-sm font-medium text-gray-700">Titre du Cours</label>
             <input type="text" id="course-title" name="course-title" class="mt-1 block w-full p-2 border rounded-lg" required>
@@ -142,13 +143,14 @@
             <label for="course-description" class="block text-sm font-medium text-gray-700">Description</label>
             <textarea id="course-description" name="course-description" rows="4" class="mt-1 block w-full p-1 border rounded-lg" required></textarea>
         </div>
-        <div class="sm:col-span-2">
-            <label for="course-content" class="block text-sm font-medium text-gray-700">Contenu (Vidéo ou Document)</label>
-            <input type="file" id="course-content" name="course-content" class="mt-1 block w-full p-2 border rounded-lg" accept=".pdf,video/*" required>
-        </div>
+       
         <div class="sm:col-span-2">
             <label for="course-tags" class="block text-sm font-medium text-gray-700">Tags</label>
             <input type="text" id="course-tags" name="course-tags" class="mt-1 block w-full p-2 border rounded-lg" placeholder="e.g., UX, Design, Web" required>
+        </div> 
+        <div class="sm:col-span-2">
+            <label for="course-content" class="block text-sm font-medium text-gray-700">Contenu (Vidéo ou Document)</label>
+            <input type="file" id="course-content" name="course-content" class="mt-1 block w-full p-2 border rounded-lg" accept=".pdf,video/*" required>
         </div>
     </div>
     <button type="submit" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
