@@ -1,6 +1,6 @@
 <?php
 
-namespace Repositories;
+namespace Repo;
 
 use Config\DB;
 
@@ -32,6 +32,8 @@ class EnrollmentRepository {
             return $e->getMessage();
         }
     }
+
+    
 
     
 }

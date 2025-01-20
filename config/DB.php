@@ -31,36 +31,24 @@ class DB {
         return self::$connection;
     }
 
-    public static function fetch($query, $params = []) {
-        try {
-            $connection = self::getConnection();
-    
-            $statement = $connection->prepare($query);
-            $statement->execute($params);
-    
-            // Fetch the result as an associative array
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            return $e->getMessage();
-        }
-    }
-    
+
     public static function query($query, $params = []) {
         try {
-            
             $connection = self::getConnection();
-
-            
             $statement = $connection->prepare($query);
             $statement->execute($params);
-
-            
-            return $statement;
+    
+            return $statement; // Return a PDOStatement on success
         } catch (\PDOException $e) {
-            
-            return $e->getMessage();
+            error_log("Database query failed: " . $e->getMessage()); // Log the error
+            return $e->getMessage(); // Return `false` to indicate failure
         }
     }
+    
+
+
+
+    
 }
 
 

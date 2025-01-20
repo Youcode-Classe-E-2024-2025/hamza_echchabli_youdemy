@@ -1,6 +1,7 @@
 <?php
 
-use Controller\CourseController;
+use Controller\AuthControllerr;
+use Controller\CoursesController;
 
 require_once  '../core/autoloader.php';
 require_once '../core/router.php';
@@ -9,7 +10,7 @@ session_start();
 
 use core\Router;
 use Controller\AuthController;
-use Controller\UserController;
+use Controller\DashController;
 
 // use Controller\CourseController;
 
@@ -28,9 +29,16 @@ $router->addRoute('GET', 'auth', function() {
 
 $router->addRoute('GET', 'manage', function() {
 
-    $controller = new UserController();
+    $controller = new DashController();
 
      $controller->manageUsers();
+    
+}); 
+$router->addRoute('GET', 'manageContent', function() {
+
+    $controller = new DashController();
+
+     $controller->manageContent();
     
 }); 
 
@@ -40,10 +48,12 @@ $router->addRoute('GET', 'manage', function() {
 
 
 $router->addRoute('GET', 'Dash', function() {
-    UserController::setRole();
+    
 
-     $controller = new UserController();
-
+     $controller = new DashController();
+     $res = unserialize($_SESSION['user']);
+     
+    DashController::setRole($res->getRole());
      $controller->getDash();
 
 });
@@ -57,7 +67,7 @@ $router->addRoute('GET', 'Dash', function() {
 // });
 
 $router->addRoute('GET', 'courses', function() {
-    $controller = new CourseController();
+    $controller = new CoursesController();
 
     if (isset($_GET['id'])) {
 
@@ -71,7 +81,7 @@ $router->addRoute('GET', 'courses', function() {
 
 
 $router->addRoute('POST', 'handleAuth', function() {
-    $controller = new AuthController();
+    $controller = new AuthControllerr();
 
     $controller->handleAuth();
 });

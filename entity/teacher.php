@@ -1,17 +1,28 @@
 <?php
+namespace Entity;
+use Entity\User;
 
-   
-  namespace Entity;
-  use Entity\User;
+class Teacher extends User {
+    private $courses = [];  
 
-  class Teacher extends User{
-
-    public function __construct(int $id, string $name, string $email, string $password ,int $state) {
-
-        parent::__construct($id, $name, $email, $password, 'teacher' , $state);
-        
+    public function __construct($id, $name, $email, $password, $role, $state , $banned ) {
+        parent::__construct($id, $name, $email, $password, $role, $state, $banned);
     }
 
+    public function getCourses() {
+        return $this->courses;
+    }
+
+    public function setCourses($courses) {
+
+         $this->courses=$courses;
+    
+    }
     
 
-  }
+    
+}
+
+
+
+?>

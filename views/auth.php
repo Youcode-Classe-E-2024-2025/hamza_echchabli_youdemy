@@ -4,6 +4,7 @@ if (isset($_SESSION['user'])) {
  header('Location: /');
 }
 
+// echo   $_SESSION['checkEnt']['email'] ;
 
 ?>
 

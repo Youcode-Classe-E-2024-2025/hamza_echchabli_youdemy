@@ -1,61 +1,43 @@
 <?php 
 
 namespace Entity;
+class Course {
+    private $id;
+    private $title;
+    private $description;
+    private $content;
+    private $teacherId;
+    private $categoryId;
+    private $tags;
+    private $details;
 
-abstract class Course {
-    private int $id;
-    private string $name;
-    private string $description;
-    private string $content;   
-    protected array $tags;
-    protected string $category;
-    public function __construct(int $id ,string $title, string $description, string $content, array $tags, string $category) {
+    public function __construct(int $id ,string $title, string $description, string $content, int $teacherId, int $categoryId, array $tags, string $details) {
+        $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->content = $content;
+        $this->teacherId = $teacherId;
+        $this->categoryId = $categoryId;
         $this->tags = $tags;
-        $this->category = $category;
+        $this->details = $details;
     }
 
-    // Getters
-    public function getId(): int {
-        return $this->id;
-    }
-
-    public function getName(): string {
-        return $this->name;
-    }
-
-    public function getDescription(): string {
-        return $this->description;
-    }
-
-    public function getContent(): string {
-        return $this->content;
-    }
-
-    // Setters
-    public function setId(int $id): void {
-        $this->id = $id;
-    }
-
-    public function setName(string $name): void {
-        $this->name = $name;
-    }
-
-    public function setDescription(string $description): void {
-        $this->description = $description;
-    }
-
-    public function setContent(string $content): void {
-        $this->content = $content;
-    }
+    // Getter methods for each property
+    public function getId() { return $this->id; }
+    public function getTitle() { return $this->title; }
+    public function getDescription() { return $this->description; }
+    public function getContent() { return $this->content; }
+    public function getTeacherId() { return $this->teacherId; }
+    public function getCategoryId() { return $this->categoryId; }
+    public function getTags() { return $this->tags; }
+    public function getDetails() { return $this->details; }
 
 
+    
+    public function setCategoryId($categoryId) { return $this->categoryId=$categoryId; }
 
+    
+    public function setContent($content) { return $this->content=$content; }
 
+    public function setTags($tags) { $this->tags=$tags; }
 }
-
-      
-
-?>

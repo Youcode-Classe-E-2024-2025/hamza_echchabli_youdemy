@@ -88,8 +88,8 @@
                     <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['role']) ?></td>
                     <td class="px-6 py-4 text-sm text-gray-800">Inactive</td>
                     <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
-                        <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="manage?action=activer&id=<?php echo $user['id'] ;?>" >Activate</a>
-                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700"  href="manage?action=banne&id=<?php echo $user['id'] ;?>" >Delete</a>
+                        <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="manage?action=state&id=<?php echo $user['id'] ;?>" >Activate</a>
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700"  href="manage?action=banned&id=<?php echo $user['id'] ;?>" >Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -127,8 +127,46 @@
                     <td class="px-6 py-4 text-sm text-gray-800">active</td>
                     <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
                         <!-- <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="manage?action=activer&id=<?php echo $user['id'] ;?>">Activer</a> -->
-                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="manage?action=suspende&id=<?php echo $user['id'] ;?>" >Suspendre</a> 
-                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md btnColor" href="manage?action=banne&id=<?php echo $user['id'] ;?>" >banne</a>
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="manage?action=state&id=<?php echo $user['id'] ;?>" >Suspendre</a> 
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md btnColor" href="manage?action=banned&id=<?php echo $user['id'] ;?>" >banne</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5" class="px-6 py-4 text-sm text-gray-800 text-center">No non-validated users found.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Utilisateurs</h2>
+            <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Nom</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Email</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Rôle</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">State</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Loop through non-validated users -->
+        <?php if (!empty($banned)): ?>
+            <?php foreach ($banned as $user): ?>
+                <tr class="border-t border-gray-200">
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['name']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['email']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($user['role']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800">banned</td>
+                    <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
+                        <!-- <a class="bgSuccess mA-1 text-white px-3 py-1 rounded-md hover:bg-green-700" href="manage?action=activer&id=<?php echo $user['id'] ;?>">Activer</a> -->
+                        <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md hover:bg-red-700" href="manage?action=banned&id=<?php echo $user['id'] ;?>" >unbanne</a> 
+                        <!-- <a class="bgDanger mA-1 text-white px-3 py-1 rounded-md btnColor" href="manage?action=banned&id=<?php echo $user['id'] ;?>" >banne</a> -->
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -146,34 +184,46 @@
 <div class="bg-white shadow rounded-lg p-6 mb-8">
     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des catégories</h2>
     <p class="text-gray-700 mb-4">Ajouter des catégories en masse pour simplifier la gestion des cours.</p>
-    <form action="#" method="POST">
+    <form id="categorieForm" method="POST">
         <div class="grid grid-cols-1 gap-4">
             <div>
                 <label for="categories" class="block text-sm font-medium text-gray-700">Nouveaux Tags</label>
                 <input id="categories" name="categories" class="mt-1 block w-full p-2 border rounded-lg" placeholder="Catégorie 1, Catégorie 2, Catégorie 3" required>
             </div>
         </div>
-        <button type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+        <button  type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
             Ajouter des catégories
         </button>
     </form>
+    <form id="formcategorySend" action="/manageContent" method="POST" hidden>
+          
+          <input id="categoriesValues" name="categoriesValues" type="text" >
+     </form>
 </div>
 
 <!-- Gestion des tags -->
+ 
 <div class="bg-white shadow rounded-lg p-6 mb-8">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des Contenus</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Gestion des tags</h2>
     <p class="text-gray-700 mb-4">Ajouter des tags en masse pour simplifier la gestion des cours.</p>
-    <form action="#" method="POST">
+    <form id="tagsForm">
         <div class="grid grid-cols-1 gap-4">
             <div>
                 <label for="tags" class="block text-sm font-medium text-gray-700">Nouveaux Tags</label>
                 <input id="tags" name="tags" class="mt-1 block w-full p-2 border rounded-lg" placeholder="Tag1, Tag2, Tag3" required>
+                
             </div>
         </div>
-        <button type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+       
+        <button  type="submit" class="mt-4 bgPrimary text-white px-6 py-2 rounded-md hover:bg-indigo-700">
             Ajouter des Tags
         </button>
-    </form>
+        </form>
+
+        <form id="formSend" action="/manageContent" method="POST" hidden>
+          
+             <input id="tagsValues" name="tagsValues" type="text" >
+        </form>
 </div>
 
         <!-- Statistiques -->
@@ -252,12 +302,52 @@
     });
 
 
-    function getData() {
+    document.getElementById('categorieForm').addEventListener('submit', function(e) {
+     
+     e.preventDefault();
 
-        console.log(tagsInput.value);
-        
-        
-    }
+     
+     const caValue = categoriesInput.value;
+     console.log(caValue);
+     
+
+     
+     let x = document.getElementById('categoriesValues');
+     console.log();
+     
+     x.value=caValue;
+
+      document.getElementById('formcategorySend').submit();
+     
+     
+      //  this.submit(); 
+ });
+
+ document.getElementById('tagsForm').addEventListener('submit', function(e) {
+     
+     e.preventDefault();
+
+     
+     const tagsValue = tagsInput.value;
+     console.log(tagsValue);
+     
+     const sendedOne = document.getElementById('formSend');
+
+     
+     let x = document.getElementById('tagsValues');
+     console.log();
+     
+     x.value=tagsValue;
+
+      document.getElementById('formSend').submit();
+     
+     
+      //  this.submit(); 
+ });
+
+
+
+
 </script>
 
 </body>

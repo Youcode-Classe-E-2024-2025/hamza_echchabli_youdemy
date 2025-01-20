@@ -1,45 +1,71 @@
 <?php
 
-namespace Repositories;
+namespace Repo;
 
 use Config\DB;
 
 class CourseRepository {
-    // Retrieve all courses with pagination
-    public function getAllCourses($N) {
+
+    // Method to create a new course
+    public static function create($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id) {
+        try {
+            DB::query(
+                "INSERT INTO public.courses (titrecour, descriptioncour, contenucour, user_id, categorie_id) 
+                 VALUES (:titrecour, :descriptioncour, :contenucour, :user_id, :categorie_id)",
+                [
+                    ':titrecour' => $titrecour,
+                    ':descriptioncour' => $descriptioncour,
+                    ':contenucour' => $contenucour,
+                    ':user_id' => $user_id,
+                    ':categorie_id' => $categorie_id
+                ]
+            );
+    
+            return true; // Return true if insertion was successful
+    
+        } catch (\Exception $e) {
+            return $e->getMessage(); // Return error message
+        }
+    }
+
+    // Method to get all courses with pagination
+    public static function getAllCourses($N) {
         try {
             $statement = DB::query(
                 "SELECT * FROM public.courses ORDER BY idcour ASC LIMIT :limitN OFFSET :offset",
                 [':limitN' => 6, ':offset' => $N]
             );
+
             return $statement->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    // Get total pages (assuming 6 courses per page)
-    public function getCount() {
+    // Method to get paginated course count
+    public static function getCount() {
         try {
             $statement = DB::query("SELECT CEIL(COUNT(*) / 6.0) AS count FROM public.courses;");
+
             return $statement->fetch();
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    // Get total number of courses
-    public function getAllCount() {
+    // Method to get total course count
+    public static function getAllCount() {
         try {
             $statement = DB::query("SELECT COUNT(*) AS count FROM public.courses;");
+
             return $statement->fetch();
         } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
-    // Get top 3 categories based on course count
-    public function getTop3Categories() {
+    // Method to get top 3 categories
+    public static function getTop3Categories() {
         try {
             $sql = "SELECT c.name, COUNT(*) AS number
                     FROM categorie c
@@ -47,16 +73,17 @@ class CourseRepository {
                     GROUP BY c.name
                     ORDER BY number DESC
                     LIMIT 3";
-
+    
             $statement = DB::query($sql);
+
             return $statement->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            throw new \Exception("Error Processing Request: " . $e->getMessage());
+            return $e->getMessage();
         }
     }
 
-    // Get top 3 courses based on enrollment count
-    public function getTop3Courses() {
+    // Method to get top 3 courses by enrollment
+    public static function getTop3Courses() {
         try {
             $sql = "SELECT c.titrecour, COUNT(*) AS number
                     FROM courses c
@@ -64,22 +91,62 @@ class CourseRepository {
                     GROUP BY c.titrecour
                     ORDER BY number DESC
                     LIMIT 3";
-
+    
             $statement = DB::query($sql);
+
             return $statement->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            throw new \Exception("Error Processing Request: " . $e->getMessage());
+            return $e->getMessage();
         }
     }
 
-    // Get courses by ID
-    public function getById($id) {
+    // Method to get a course by ID
+    public static function getById($id) {
         try {
             $statement = DB::query(
                 "SELECT * FROM public.courses WHERE idcour = :id",
                 [':id' => $id]
             );
+
             return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    // Method to update an existing course
+    public static function update($id, $titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id) {
+        try {
+            DB::query(
+                "UPDATE public.courses
+                 SET titrecour = :titrecour, descriptioncour = :descriptioncour, contenucour = :contenucour, 
+                     user_id = :user_id, categorie_id = :categorie_id 
+                 WHERE idcour = :id",
+                [
+                    ':id' => $id,
+                    ':titrecour' => $titrecour,
+                    ':descriptioncour' => $descriptioncour,
+                    ':contenucour' => $contenucour,
+                    ':user_id' => $user_id,
+                    ':categorie_id' => $categorie_id
+                ]
+            );
+
+            return true;
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    // Method to delete a course
+    public static function delete($id) {
+        try {
+            DB::query(
+                "DELETE FROM public.courses WHERE idcour = :id",
+                [':id' => $id]
+            );
+
+            return true;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
