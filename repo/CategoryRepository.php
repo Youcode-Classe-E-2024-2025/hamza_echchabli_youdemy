@@ -40,7 +40,7 @@ class CategoryRepository {
     }
 
     // Get all categories
-    public function getAll() {
+    public static function getAll() {
         try {
             $query = "SELECT * FROM public.categorie ORDER BY id ASC";
             $statement = DB::query($query);

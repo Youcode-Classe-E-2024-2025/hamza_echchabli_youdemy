@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Dashboard - Youdemy</title>
     <link rel="stylesheet" href="../css/output.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
     <style>
         /* Navbar styles */
         nav {
             width: 100%;
            position:fixed;
             z-index: 1000;
+        }
+        .RG{
+            background-color: #8B0000;
         }
 
         .navbar a {
@@ -124,36 +130,82 @@
         <!-- Add New Course Section -->
         <div id="create-course" class="bg-white shadow rounded-lg p-6 mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Ajouter un Nouveau Cours</h2>
-<form action="/manageCourses" method="POST" enctype="multipart/form-data">
+<form id="coursAddContent" action="/manageCourses" method="POST" enctype="multipart/form-data">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <input name="action" value="add" hidden>
         <div>
             <label for="course-title" class="block text-sm font-medium text-gray-700">Titre du Cours</label>
             <input type="text" id="course-title" name="course-title" class="mt-1 block w-full p-2 border rounded-lg" required>
         </div>
-        <div>
+        <!-- <div>
             <label for="course-category" class="block text-sm font-medium text-gray-700">Catégorie</label>
             <select id="course-category" name="course-category" class="mt-1 block w-full p-2 border rounded-lg">
                 <option value="design">Design</option>
                 <option value="development">Development</option>
                 <option value="data-science">Data Science</option>
             </select>
-        </div>
+        </div> -->
+
+        <div>
+    <label for="course-category" class="block text-sm font-medium text-gray-700">Catégorie</label>
+    <select id="course-category" name="course-category" class="mt-1 block w-full p-2 border rounded-lg">
+        <?php if (is_array($categories)): ?>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category->getId(); ?>"><?php echo htmlspecialchars($category->getName()); ?></option>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <option disabled>No categories found</option>
+        <?php endif; ?>
+    </select>
+</div>
         <div class="sm:col-span-2">
             <label for="course-description" class="block text-sm font-medium text-gray-700">Description</label>
             <textarea id="course-description" name="course-description" rows="4" class="mt-1 block w-full p-1 border rounded-lg" required></textarea>
         </div>
-       
         <div class="sm:col-span-2">
+    <label for="course-tags" class="block text-sm font-medium text-gray-700">Tags</label>
+    <select id="course-tags" class="mt-1 block w-full p-2 border rounded-lg" required onchange="updateTagPreview()">
+        <option value="" disabled selected>Select a tag</option>
+        <?php if (is_array($tags)): ?>
+            <?php foreach ($tags as $tag): ?>
+                <option value="<?php echo $tag->getId(); ?>" data-name="<?php echo htmlspecialchars($tag->getName()); ?>">
+                    <?php echo htmlspecialchars($tag->getName()); ?>
+                </option>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <option disabled>No tags available</option>
+        <?php endif; ?>
+    </select>
+</div>
+
+<!-- Tag Preview Section -->
+<div id="tag-preview" class="sm:col-span-2 mt-2">
+    <p class="text-lg text-black">Tags preview: <span id="tag-list"></span></p>
+    <input type="text" id="courseTags" name="course-tags" class="mt-1 block w-full p-2 border rounded-lg" readonly hidden>
+</div>
+        <!-- <div class="sm:col-span-2">
             <label for="course-tags" class="block text-sm font-medium text-gray-700">Tags</label>
-            <input type="text" id="course-tags" name="course-tags" class="mt-1 block w-full p-2 border rounded-lg" placeholder="e.g., UX, Design, Web" required>
-        </div> 
-        <div class="sm:col-span-2">
-            <label for="course-content" class="block text-sm font-medium text-gray-700">Contenu (Vidéo ou Document)</label>
-            <input type="file" id="course-content" name="course-content" class="mt-1 block w-full p-2 border rounded-lg" accept=".pdf,video/*" required>
-        </div>
+            <input type="text" id="course-tags" name="course-tags" class="mt-1 block w-full p-2 border rounded-lg" hidden>
+        </div>  -->
+        <select id="chooseType" onchange="toggleContentType()">
+    <option value="video">Video</option>
+    <option value="document">Document</option>
+</select>
+
+<!-- Video Content Input -->
+<div class="sm:col-span-2" id="video-content" class="hidden">
+    <label for="course-content" class="block text-sm font-medium text-gray-700">Contenu Video</label>
+    <input type="file" id="course-content" name="course-content" class="mt-1 block w-full p-2 border rounded-lg" accept="video/*" >
+</div>
+<input id="editorContent" type="hidden" name="md">
+
+<div  id="text-editor" class=" mb-4">
+    <label for="description" class="block text-sm font-medium text-gray-700">Contenu Texte</label>
+    <textarea id="description" ></textarea>
+</div>
+
     </div>
-    <button type="submit" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
+    <button id="sendcourse" type="submit" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
         Ajouter le Cours
     </button>
 </form>
@@ -164,7 +216,7 @@
         <div class="bg-white shadow rounded-lg  w-full">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mes cours</h2>
             <div class="positionTable">
-                <table class="fullWith bg-white border border-gray-300 rounded-lg ">
+                <!-- <table class="fullWith bg-white border border-gray-300 rounded-lg ">
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Titre</th>
@@ -176,7 +228,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example Row -->
+                      
                         <tr class="border-t border-gray-200">
                             <td class="px-6 py-4 text-sm text-gray-800">UX Design Fundamentals</td>
                             <td class="px-6 py-4 text-sm text-gray-800">Design</td>
@@ -221,11 +273,42 @@
                                 <button class="bgDEBTN text-white px-3 py-1 rounded-md hover:bg-green-700">Update</button>
                             </td>
                         </tr>
-                        <!-- Add more rows here -->
+                        
                     </tbody>
-                </table>
+                </table> 
             </div>
-        </div>
+        </div>-->
+        <table class="fullWith bg-white border border-gray-300 rounded-lg ">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Titre</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Catégorie</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Créateur</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($courses as $course): ?>
+            <tr class="border-t border-gray-200">
+                <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($course['titrecour']) ?></td>
+                <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($course['categorie_name']) ?></td>
+                <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($course['user_name']) ?></td>
+                <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
+                <!-- <input name="action" value="add" hidden>/manageCourses -->
+                <form action="/manageCourses" method="POST" style="display:inline;">
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="id" value="<?php echo htmlspecialchars($course['idcour']); ?>">
+    <button type="submit" class="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700">
+        Cancel
+    </button>
+</form>
+                
+                <a href="" class="RG text-white px-3 py-1 rounded-md hover:bg-green-700">Update</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
         <!-- Course Statistics Section -->
         <div class="bg-white shadow rounded-lg p-6">
@@ -233,11 +316,21 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
                 <div class="card bg-green-100 text-green-600">
                     <h3 class="font-semibold">Nombre Total de Cours</h3>
-                    <p class="text-lg">123</p>
+                    <p class="text-lg"><?php echo $coursesCount['count'] ?></p>
                 </div>
                 <div class="card bg-blue-100 text-blue-600">
                     <h3 class="font-semibold">Répartition par Catégorie</h3>
-                    <p class="text-lg">Développement: 45, Design: 35, Data Science: 43</p>
+                    <p class="text-lg">
+
+                    <?php 
+        foreach ($CategorieC as $category) {
+            echo htmlspecialchars($category['name']) . ': ' . htmlspecialchars($category['number']) . '   , ';
+        }
+        ?>
+
+
+
+                    </p>
                 </div>
                 <div class="card bg-yellow-100 text-yellow-600 shadow-md rounded-lg p-4">
                     <h3 class="font-semibold text-lg mb-2">Nombre d'Étudiants inscrits</h3>
@@ -300,6 +393,88 @@
             </div>
         </div>
     </footer>
+   
+
+
+<script>
+   
+    function toggleContentType() {
+        const contentType = document.getElementById('chooseType').value;
+        const videoContent = document.getElementById('video-content');
+        const textEditor = document.getElementById('text-editor');
+
+        // Show/hide the appropriate content input based on selection
+        if (contentType === 'video') {
+            videoContent.classList.remove('hidden');
+            textEditor.classList.add('hidden');
+            // Remove TinyMCE if switching to video
+        } else if (contentType === 'document') {
+            videoContent.classList.add('hidden');
+            textEditor.classList.remove('hidden');
+             // Initialize TinyMCE if switching to document
+             
+        }
+    }
+
+    // Initialize TinyMCE when document type is selected
+    let simplemde = new SimpleMDE({
+        element: document.getElementById("description"),
+        spellChecker: false,  // Disable spellchecker if not needed
+        autosave: {
+            enabled: true,
+            uniqueId: "myEditor",
+            delay: 1000,
+        },
+        toolbar: [
+            "bold", "italic", "heading", "|", 
+            "quote", "unordered-list", "ordered-list", "|", 
+            "preview", "side-by-side", "fullscreen", "|", 
+            "guide"
+        ],
+        placeholder: "Écrivez quelque chose en Markdown...",
+    });
+
+    simplemde.codemirror.on("change", function(){
+
+
+    simplemde.value()
+});
+
+document.getElementById('sendcourse').addEventListener('click' , (e)=>{
+
+    document.getElementById('editorContent').value = simplemde.value();
+      
+
+
+})
+
+function updateTagPreview() {
+        var selectElement = document.getElementById('course-tags');
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        
+        // Get the selected tag's ID and Name
+        var tagId = selectedOption.value;
+        var tagName = selectedOption.getAttribute('data-name');
+        
+        // Update the tag preview
+        document.getElementById('tag-list').textContent += tagName;
+        document.getElementById('tag-list').textContent += ',';
+        
+        // Update the hidden input value with the selected tag's ID
+        document.getElementById('courseTags').value += tagId;
+        document.getElementById('courseTags').value += ',';
+
+        console.log();
+        
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleContentType();  // Initialize the content based on current selection
+    });
+
+</script>
 
 </body>
 </html>

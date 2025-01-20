@@ -6,14 +6,17 @@ use Service\CategoryService;
 use Service\CourseService;
 use Service\UserService;
 use Service\TagService;
+use Service\Course_tagService;
 class DashController {
 
     private static $userS;
     private static $courseS;
 
     private static $tagsS;
-
+    private static $cousTagS;
     private static $categoryS;
+
+   
     
     private static string $role;
 
@@ -24,6 +27,7 @@ class DashController {
         self::$courseS = new CourseService();
         self::$tagsS = new TagService();
         self::$categoryS = new CategoryService();
+        self::$cousTagS =new Course_tagService();
 
     }
     public function manageUsers() {
@@ -110,7 +114,7 @@ class DashController {
 
     public function manageCourses()
 {
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && $_SERVER["REQUEST_METHOD"] == "POST") {
         
        
             $action = $_POST['action'];
@@ -120,9 +124,9 @@ class DashController {
                     $this->addCourse();
                     break;
                 
-                case 'update':
+                case 'delete':
                     // Future update course method
-                    $this->updateCourse();
+                    $this->deleteCours($_POST['id']);
                     break;
                 
                 default:
@@ -136,67 +140,158 @@ class DashController {
    
 }
 
+// public function addCourse()
+// {
+//     try {
+//         // Sanitize and collect form data
+//         $titrecour = $_POST['course-title']; 
+//         $categorie_id = 2;
+//         $descriptioncour = $_POST['course-description'];
+//         // $tags = explode(',', filter_input(INPUT_POST, 'course-tags', FILTER_SANITIZE_STRING));
+
+//         // Handle file upload
+//         if (isset($_FILES['course-content']) && $_FILES['course-content']['error'] === UPLOAD_ERR_OK) {
+//             $uploadDir = '../uploads/courses/';
+//             $fileName = uniqid() . "_" . basename($_FILES['course-content']['name']);
+//             $contenucour = $uploadDir . $fileName;
+
+//             if (!is_dir($uploadDir)) {
+//                 mkdir($uploadDir, 0777, true);
+//             }
+
+//             if (move_uploaded_file($_FILES['course-content']['tmp_name'], $contenucour)) {
+
+//                 $user = $user = unserialize($_SESSION['user']); 
+                
+//                 $user_id= $user->getId();
+
+//                 $courseId = self::$courseS::createCourse($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id);
+                
+//                 echo $courseId->fetch();
+//                 // if ($courseId) {
+//                 //     // Insert tags into the database
+//                 //     $tagValues = array_map('trim', $tags);
+//                 //     Repo\TagRepository::massInsert($tagValues);
+
+//                 //     echo "Course added successfully!";
+//                 // } else {
+//                 //     echo "Failed to add course.";
+//                 // }
+//             }  
+//             } else if (isset($_POST['md']) && !empty(trim($_POST['md']))) {
+//                 // Handling text-based course content (TinyMCE content)
+//                 $contenucour = trim($_POST['md']);  // Retrieve TinyMCE content safely
+            
+//                 $user = unserialize($_SESSION['user']); 
+//                 $user_id = $user->getId();
+            
+//                 // Save course with text content
+//                 $courseId = self::$courseS::createCourse($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id);
+                
+//                 echo $courseId->fetch();
+//             } else {
+//                 echo "Invalid file upload or content submission.";
+//             }
+        
+//     } catch (\Exception $e) {
+//         echo "Error: " . $e->getMessage();
+//     }
+// }
+
+  
 public function addCourse()
 {
     try {
         // Sanitize and collect form data
         $titrecour = $_POST['course-title']; 
-        $categorie_id = 2;
+        $categorie_id = $_POST['course-category'];
         $descriptioncour = $_POST['course-description'];
-        // $tags = explode(',', filter_input(INPUT_POST, 'course-tags', FILTER_SANITIZE_STRING));
+        $tags = $_POST['course-tags'];
 
-        // Handle file upload
+        // Directory to store course files
+        $uploadDir = '../uploads/courses/';
+
+        // Ensure the upload directory exists
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        // Handle file uploads (video or document)
         if (isset($_FILES['course-content']) && $_FILES['course-content']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = '../uploads/courses/';
             $fileName = uniqid() . "_" . basename($_FILES['course-content']['name']);
             $contenucour = $uploadDir . $fileName;
 
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
-
             if (move_uploaded_file($_FILES['course-content']['tmp_name'], $contenucour)) {
+                $user = unserialize($_SESSION['user']); 
+                $user_id = $user->getId();
 
-                $user = $user = unserialize($_SESSION['user']); 
-                
-                $user_id= $user->getId();
-
+                // Save course with uploaded file (video or document)
                 $courseId = self::$courseS::createCourse($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id);
-                
-                echo $courseId->fetch();
-                // if ($courseId) {
-                //     // Insert tags into the database
-                //     $tagValues = array_map('trim', $tags);
-                //     Repo\TagRepository::massInsert($tagValues);
-
-                //     echo "Course added successfully!";
-                // } else {
-                //     echo "Failed to add course.";
-                // }
+                self::$cousTagS::insertCourseTags($courseId->fetchColumn() , $tags) ;
+                // echo $courseId->fetchColumn();
             } else {
                 echo "File upload failed.";
             }
+
+        } else if (isset($_POST['md']) && !empty(trim($_POST['md']))) {
+            // Handling text-based course content (TinyMCE content)
+            $content = trim($_POST['md']);
+            $fileName = uniqid() . "_content.md";  // Save as Markdown or .txt file
+            $filePath = $uploadDir . $fileName;
+
+            // Save content to a file
+            if (file_put_contents($filePath, $content)) {
+                $user = unserialize($_SESSION['user']); 
+                $user_id = $user->getId();
+
+                // Save course with reference to the saved text file
+                $courseId = self::$courseS::createCourse($titrecour, $descriptioncour, $filePath, $user_id, $categorie_id);
+                self::$cousTagS::insertCourseTags($courseId->fetchColumn() , $tags) ;
+                // echo $courseId;
+            } else {
+                echo "Failed to save text content.";
+            }
+
         } else {
-            echo "Invalid file upload.";
+            echo "Invalid file upload or content submission.";
         }
+
     } catch (\Exception $e) {
         echo "Error: " . $e->getMessage();
     }
 }
 
-  
 
 
-
+  public function deleteCours($id){
+    self::$courseS->deletecour($id);
+  } 
 
 
 
     private function teacherDashData(){
+       try{
+        $catego= self::$categoryS->getAllCategories();
+        $tag=self::$tagsS->getAllTags();
+        $res = unserialize($_SESSION['user']);
+        $courses=self::$courseS->getCoursesByUserId($res->getId());
+        $countStat =  self::$courseS->getCoursesCount($res->getId());
+        $CategorieC =  self::$courseS->getUserCategoriesC($res->getId());
+        $data = [
+            
+            'categories' => $catego,
+            'tags' => $tag,
+            'courses' =>$courses,
+            'coursesCount' =>$countStat ,
+            'CategorieC' => $CategorieC
 
 
-        $x = [];
+        ];
 
-        $this->DashView($x);
+        $this->DashView($data);
+    } catch (\Exception $e) {
+        $this->DashView(['message' => $e->getMessage()]);
+    }
 
 
 
@@ -285,7 +380,7 @@ public function addCourse()
         self::$tagsS->insertTags($data);
     }
 
-    
+  
 
     public function addCatig($data){
         

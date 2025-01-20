@@ -24,6 +24,26 @@ class CourseService {
         return CourseRepository::getById($id);
     }
 
+    public static function getCoursesByUserId($id) {
+        return CourseRepository::getByUserId($id);
+    }
+
+    
+    public static function deletecour($id) {
+        return CourseRepository::delete($id);
+    }
+
+    // getUserCategories
+
+    public static function getCoursesCount($id) {
+        return CourseRepository::getCourseCountByUserId($id);
+    }
+
+    public static function getUserCategoriesC($id) {
+        return CourseRepository::getUserCategories($id);
+    }
+
+
     // Method to get paginated course count
     public static function getCount() {
         return CourseRepository::getCount();

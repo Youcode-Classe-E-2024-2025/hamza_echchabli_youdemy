@@ -23,19 +23,21 @@ class TagService {
         }
     }
 
-    public static function getAllTags(){
-
- try {
-            // Call the massInsert method from TagRepository
-            $result = TagRepository::getAll();
-
-            
-          
-            return "Tags inserted successfully.";
-           
+    public static function getAllTags() {
+        try {
+            // Fetch tags from the TagRepository
+            $tagsData = TagRepository::getAll();
+    
+            // Convert the fetched data into Tag entity objects
+            $tags = [];
+            foreach ($tagsData as $tag) {
+                $tags[] = new \Entity\Tag($tag['name'], $tag['id']);
+            }
+    
+            return $tags;  // Return an array of Tag objects
         } catch (\Exception $e) {
             return "Error: " . $e->getMessage();
         }
-    
     }
+    
 }

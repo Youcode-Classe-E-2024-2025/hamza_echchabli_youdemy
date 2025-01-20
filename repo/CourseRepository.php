@@ -6,12 +6,11 @@ use Config\DB;
 
 class CourseRepository {
 
-    // Method to create a new course
     public static function create($titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id) {
         try {
             $res =DB::query(
                 "INSERT INTO public.courses (titrecour, descriptioncour, contenucour, user_id, categorie_id) 
-                 VALUES (:titrecour, :descriptioncour, :contenucour, :user_id, :categorie_id) ",
+                 VALUES (:titrecour, :descriptioncour, :contenucour, :user_id, :categorie_id) RETURNING idcour",
                 [
                     ':titrecour' => $titrecour,
                     ':descriptioncour' => $descriptioncour,
@@ -28,6 +27,8 @@ class CourseRepository {
         }
     }
 
+    
+    
     // Method to get all courses with pagination
     public static function getAllCourses($N) {
         try {
@@ -63,6 +64,38 @@ class CourseRepository {
             return $e->getMessage();
         }
     }
+
+
+    public static function getCourseCountByUserId($id) {
+        try {
+            $statement = DB::query("SELECT COUNT(*) AS count FROM public.courses where user_id = :id ;" , [':id' => $id]);
+
+            return $statement->fetch();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public static function getUserCategories($id) {
+        try {
+            $sql = "SELECT c.name, COUNT(*) AS number
+                    FROM categorie c
+                    JOIN courses co ON co.categorie_id = c.id
+                     WHERE co.user_id = :id
+                    GROUP BY c.name
+                    ORDER BY number DESC
+                    ";
+    
+            $statement = DB::query($sql, [':id' => $id]);
+
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+
+
 
     // Method to get top 3 categories
     public static function getTop3Categories() {
@@ -113,6 +146,30 @@ class CourseRepository {
             return $e->getMessage();
         }
     }
+
+    public static function getByUserId($id) {
+        try {
+            $statement = DB::query(
+                "SELECT 
+                    courses.idcour, 
+                    courses.titrecour, 
+                    courses.descriptioncour, 
+                    courses.contenucour, 
+                    users.name AS user_name, 
+                    categorie.name AS categorie_name
+                FROM public.courses
+                INNER JOIN public.users ON courses.user_id = users.id
+                INNER JOIN public.categorie ON courses.categorie_id = categorie.id
+                WHERE courses.user_id = :id",
+                [':id' => $id]
+            );
+    
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+    
 
     // Method to update an existing course
     public static function update($id, $titrecour, $descriptioncour, $contenucour, $user_id, $categorie_id) {

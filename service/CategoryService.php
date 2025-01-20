@@ -4,9 +4,11 @@ namespace Service;
 
 use Repo\CategoryRepository;
 
+use Entity\Category;
+
 class CategoryService {
 
-    // Method to mass insert categories
+    
     public static function insertCategories(array $categories) {
         try {
             // Debugging: Display the categories to ensure correct input
@@ -30,11 +32,16 @@ class CategoryService {
     // Method to get all categories
     public static function getAllCategories() {
         try {
-            // Call the getAll method from CategoryRepository
-            // $result = CategoryRepository::getAll();
+            // Fetch categories from repository
+            $categoriesData = CategoryRepository::getAll();
 
-            // Return the fetched categories
-            // return $result;  // You may need to return a formatted result, depending on your implementation
+            // Convert the fetched data into Category entity objects
+            $categories = [];
+            foreach ($categoriesData as $category) {
+                $categories[] = new Category($category['name'], $category['id']);
+            }
+
+            return $categories;
         } catch (\Exception $e) {
             // Return any error messages
             return "Error: " . $e->getMessage();
