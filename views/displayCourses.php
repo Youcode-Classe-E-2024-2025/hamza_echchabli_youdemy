@@ -139,12 +139,23 @@
                         <option value="newest">Newest</option>
                     </select>
                 </div> -->
-                <div class="search-container">
+                <!-- <div class="search-container">
                     <input type="text" placeholder="Search courses..." />
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                </div>
+                </div> -->
+            
+                <form class="search-container" action="/courses" method="GET">
+    <input type="text" name="name" placeholder="Search courses..." aria-label="Search courses" />
+    <button type="submit" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+    </button>
+</form>
+
+
             </div>
         </div>
         
@@ -154,35 +165,44 @@
         <div class="max-w-7xl mx-auto px-4 py-8">
     <div id="courseContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
    
-        <?php foreach ($courses as $course): ?>
-            <article class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                <div class="aspect-video bg-slate-100"></div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4"><?php echo htmlspecialchars($course['titrecour']); ?></h3>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <!-- Display course tags, if any -->
-                    
-                    </div>
-                    <div class="space-y-3 mb-4">
-                        <p class="text-slate-600 text-sm flex items-center gap-2">
-                            <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                            Category: <?php echo htmlspecialchars($course['categorie_id']); ?>
-                        </p>
-                        <p class="text-slate-600 text-sm flex items-center gap-2">
-                            <span class="w-4 h-4 rounded-full bg-slate-100 inline-block"></span>
-                            Creator: <?php echo htmlspecialchars($course['user_id']); ?>
-                        </p>
-                    </div>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="bg-green-50 text-green-600 text-sm px-3 py-1 rounded-full">444 Students</span>
-                        <span class="bg-amber-50 text-amber-600 text-sm px-3 py-1 rounded-full">555 Views</span>
-                    </div>
-                    <a href="details?id=<?php echo $course['idcour'];?>" class="w-full bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors">
-                        View Details
-                    </a>
-                </div>
-            </article>
-        <?php endforeach; ?>
+    <?php foreach ($courses as $course): ?>
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h3 class="text-xl font-bold mb-4"><?= htmlspecialchars($course['titrecour']) ?></h3>
+        
+        <div class="flex flex-wrap gap-2 mb-4">
+        <?php 
+    // Check if tags are null or empty
+    if (empty($course['tags'])) {
+        echo '<span class="text-gray-400 text-sm">No tags exist</span>';
+    } else {
+        // If tags are available, explode the string into an array
+        $tags = explode(', ', $course['tags']);
+        foreach ($tags as $tag): ?>
+            <span class="bg-blue-100 text-blue-600 text-sm px-3 py-1 rounded-full"><?= htmlspecialchars($tag) ?></span>
+        <?php endforeach;
+    }
+?>
+        </div>
+
+        <div class="bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded mb-4">
+            Category: <?= htmlspecialchars($course['categorie']) ?>
+        </div>
+
+        <div class="bg-gray-100 text-gray-700 text-sm px-4 py-2 rounded mb-4">
+            Description: <?= htmlspecialchars($course['descriptioncour']) ?>
+        </div>
+
+        <div class="flex justify-between items-center mb-4">
+            <div class="bg-green-100 text-green-600 text-sm px-4 py-2 rounded">Students: <?= htmlspecialchars($course['students'] ?? 'N/A') ?></div>
+            <div class="bg-yellow-100 text-yellow-600 text-sm px-4 py-2 rounded">Views: <?= htmlspecialchars($course['views'] ?? 'N/A') ?></div>
+        </div>
+
+        <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+           <a href="/details?id=<?= htmlspecialchars($course['idcour']) ?>">View Details</a> 
+        </button>
+    </div>
+<?php endforeach; ?>
+
     </div>
 </div>
 
@@ -198,26 +218,25 @@
                 <a  href="?page=<?=$current_page-1?>" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" >
                     Previous
         </a>
-                <?php
+        <?php
+    $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-                  $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                  for ($i = 0; $i <= $count['count']-1; $i++) {
-                    if ($i === $current_page) {
-                        // Highlight the current page button
-                        echo '<button class="px-4 py-2 bg-slate-800 text-white rounded-lg">' . $i . '</button>';
-                    } else {
-                        // Regular button with a link to the page
-                        // echo '<button onclick="window.location.href=\'?page=' . $i . '\'" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">' . $i . '</button>';
-                        echo '<a href="?page=' . $i . '" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">' . $i . '</a>';
-                 
-                   
-                    }
-                }
+    // Check if $count['count'] exists and is greater than 0
+    if (isset($count['count']) && $count['count'] > 0) {
+        for ($i = 0; $i <= $count['count'] - 1; $i++) {
+            if ($i === $current_page) {
+                // Highlight the current page button
+                echo '<button class="px-4 py-2 bg-slate-800 text-white rounded-lg">' . $i . '</button>';
+            } else {
+                // Regular button with a link to the page
+                echo '<a href="?page=' . $i . '" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50">' . $i . '</a>';
+            }
+        }
+    } else {
+        echo '<p class="text-gray-500">No pages available</p>';
+    }
+?>
 
-
-
-
-                ?>
                 <a  href="?page=<?=$current_page+1?>" class="px-4 py-2 border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed" >
                     Next
         </a>

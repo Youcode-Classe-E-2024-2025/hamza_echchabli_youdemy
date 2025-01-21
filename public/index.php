@@ -11,6 +11,7 @@ session_start();
 use core\Router;
 use Controller\AuthController;
 use Controller\DashController;
+use Controller\detailsController;
 
 // use Controller\CourseController;
 
@@ -25,6 +26,12 @@ $router->addRoute('GET', '', function() {
 
 $router->addRoute('GET', 'auth', function() {
     require_once '../views/auth.php';
+});
+
+$router->addRoute('GET', 'details', function() {
+    $controller = new detailsController();
+
+     $controller->handleRequest();
 });
 
 $router->addRoute('GET', 'manage', function() {
@@ -79,11 +86,11 @@ $router->addRoute('GET', 'Dash', function() {
 $router->addRoute('GET', 'courses', function() {
     $controller = new CoursesController();
 
-    if (isset($_GET['id'])) {
+    if (isset($_GET['name'])) {
 
-        $controller->getCourseById($_GET['id']);
+        $controller->getCourseBytitle($_GET['name']);
     } else {
-        // Otherwise, list all courses
+       
         $controller->listCourses($_GET['page']);
     }
 });

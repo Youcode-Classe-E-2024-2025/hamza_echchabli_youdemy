@@ -33,7 +33,22 @@ class CourseRepository {
     public static function getAllCourses($N) {
         try {
             $statement = DB::query(
-                "SELECT * FROM public.courses ORDER BY idcour ASC LIMIT :limitN OFFSET :offset",
+                "SELECT 
+                    co.idcour, 
+                    co.titrecour, 
+                    co.descriptioncour, 
+                    co.details, 
+                    cat.name AS categorie, 
+                    STRING_AGG(t.name, ', ') AS tags
+                FROM public.courses co
+                JOIN public.categorie cat ON co.categorie_id = cat.id
+                LEFT JOIN public.course_tag ct ON co.idcour = ct.course_id
+                LEFT JOIN public.tag t ON ct.tag_id = t.id
+               
+                GROUP BY co.idcour, co.titrecour, co.descriptioncour, co.details, categorie 
+                 ORDER BY co.idcour ASC
+                LIMIT :limitN OFFSET :offset
+                ;",
                 [':limitN' => 6, ':offset' => $N]
             );
 
@@ -42,6 +57,62 @@ class CourseRepository {
             return $e->getMessage();
         }
     }
+
+
+    public static function getByName($name) {
+        try {
+            $sql = "SELECT 
+                        co.idcour, 
+                        co.titrecour, 
+                        co.descriptioncour, 
+                        co.details, 
+                        cat.name AS categorie, 
+                        STRING_AGG(t.name, ', ') AS tags
+                    FROM public.courses co
+                    JOIN public.categorie cat ON co.categorie_id = cat.id
+                    LEFT JOIN public.course_tag ct ON co.idcour = ct.course_id
+                    LEFT JOIN public.tag t ON ct.tag_id = t.id
+                    WHERE co.titrecour ILIKE :name || '%'
+                    GROUP BY co.idcour, co.titrecour, co.descriptioncour, co.details, cat.name";
+    
+            $statement = DB::query($sql, [':name' => $name]);
+    
+           return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public static function getById($id) {
+        try {
+            $statement = DB::query(
+                
+                "SELECT 
+                        co.idcour, 
+                        co.titrecour, 
+                        co.descriptioncour, 
+                        co.details, 
+                        cat.name AS categorie, 
+                        STRING_AGG(t.name, ', ') AS tags
+                    FROM public.courses co
+                    JOIN public.categorie cat ON co.categorie_id = cat.id
+                    LEFT JOIN public.course_tag ct ON co.idcour = ct.course_id
+                    LEFT JOIN public.tag t ON ct.tag_id = t.id
+                    WHERE co.idcour = :id
+                    GROUP BY co.idcour, co.titrecour, co.descriptioncour, co.details, cat.name
+                
+                
+                ",
+                [':id' => $id]
+            );
+
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    
 
     // Method to get paginated course count
     public static function getCount() {
@@ -134,18 +205,18 @@ class CourseRepository {
     }
 
     // Method to get a course by ID
-    public static function getById($id) {
-        try {
-            $statement = DB::query(
-                "SELECT * FROM public.courses WHERE idcour = :id",
-                [':id' => $id]
-            );
+    // public static function getById($id) {
+    //     try {
+    //         $statement = DB::query(
+    //             "SELECT * FROM public.courses WHERE idcour = :id",
+    //             [':id' => $id]
+    //         );
 
-            return $statement->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-    }
+    //         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    //     } catch (\Exception $e) {
+    //         return $e->getMessage();
+    //     }
+    // }
 
     public static function getByUserId($id) {
         try {

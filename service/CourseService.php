@@ -19,6 +19,10 @@ class CourseService {
     }
 
 
+    public static function getCourseByName($id) {
+        return CourseRepository::getByName($id);
+    }
+
 
     public static function getCourseById($id) {
         return CourseRepository::getById($id);

@@ -24,13 +24,13 @@ class CoursesController {
     }
 
     // Method to get a course by ID
-    public function getCourseById($id) {
+    public function getCourseBytitle($title) {
         try {
             // Get a specific course by ID from the CourseService
-            $courses = CourseService::getCourseById($id); // Implement `getCourseById` in CourseService if not already done
+            $courses = CourseService::getCourseByName($title); // Implement `getCourseById` in CourseService if not already done
             
             // Return the course (for an API response, you can convert to JSON)
-            return $this->view('coursDetails', ['count' => 0], ['courses' => $courses]);
+            return $this->view('displayCourses', ['count' => 0], ['courses' => $courses]);
         } catch (\Exception $e) {
             // Handle any potential errors
             return $this->view('error', ['message' => $e->getMessage()]);
