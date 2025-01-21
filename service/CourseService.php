@@ -22,6 +22,10 @@ class CourseService {
     public static function getCourseByName($id) {
         return CourseRepository::getByName($id);
     }
+    // getStudentCourses
+    public static function getStudentCourseById($id) {
+        return CourseRepository::getStudentCourses($id);
+    }
 
 
     public static function getCourseById($id) {

@@ -29,7 +29,7 @@ class CategoryRepository {
                       ON CONFLICT (name) DO NOTHING RETURNING id";
             
             // Execute the query
-            var_dump(DB::query($query, $params));
+        DB::query($query, $params);
             
             
 

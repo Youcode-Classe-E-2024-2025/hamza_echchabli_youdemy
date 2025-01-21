@@ -106,6 +106,16 @@ class detailsController {
 
 
 
+       public function unroll($user_id , $courseId){
+
+
+        EnrollmentRepository::delete($user_id , $courseId);
+
+        //  echo $user_id . ' '. $courseId ;
+        header('Location: /Dash');
+
+
+         }
 
 
 
@@ -123,8 +133,7 @@ class detailsController {
 
 
 
-
-
+  
 
 
 

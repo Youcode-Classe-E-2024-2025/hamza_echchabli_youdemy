@@ -12,7 +12,7 @@ class CategoryService {
     public static function insertCategories(array $categories) {
         try {
             // Debugging: Display the categories to ensure correct input
-            var_dump($categories);
+            // var_dump($categories);
             
             // Call the massInsert method from CategoryRepository
             $result = CategoryRepository::massInsert($categories);

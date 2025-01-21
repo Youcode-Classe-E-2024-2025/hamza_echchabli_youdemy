@@ -9,7 +9,7 @@ class TagService {
     // Method to mass insert tags
     public static function insertTags(array $tags) {
         try {
-            var_dump($tags);
+            // var_dump($tags);
             $result = TagRepository::massInsert($tags);
 
             // Check if result indicates success or failure

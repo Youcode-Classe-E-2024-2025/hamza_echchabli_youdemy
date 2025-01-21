@@ -19,7 +19,7 @@
                 </div>
                 <div class="hidden md:flex space-x-8">
                     <a href="courses?page=0" class="text-slate-600 hover:text-slate-900">COURSES</a>
-                    <a href="courses" class="text-slate-600 hover:text-slate-900">Teach</a>
+                    <!-- <a href="courses" class="text-slate-600 hover:text-slate-900">Teach</a> -->
                     <a href="Dash" class="text-slate-600 hover:text-slate-900">My DASHBOARD</a>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -55,12 +55,13 @@
                         Join over 1 million learners already learning with Youdemy's expert-led courses
                     </p> 
                     <div class="flex flex-col sm:flex-row gap-4">
-                        <input type="text" 
+                      <form action="/courses" method="GET">
+                        <input type="text" name="name"
                                placeholder="What do you want to learn?"
                                class="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500">
                         <button class="bg-slate-800 text-white px-6 py-3 rounded-lg hover:bg-slate-700">
                             Find Courses
-                        </button>
+                        </button></form>  
                     </div>
                 </div>
                 <div class="bg-slate-100 p-8 rounded-lg">
@@ -91,7 +92,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-bold text-gray-900">Featured Courses</h2>
-        <a href="courses" class="text-indigo-600 hover:text-indigo-700">View All &rarr;</a>
+        <a href="/courses?page=0" class="text-indigo-600 hover:text-indigo-700">View All &rarr;</a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <!-- Course Card -->

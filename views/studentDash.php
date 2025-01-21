@@ -1,3 +1,12 @@
+<?php
+
+// var_dump($data);
+if (isset($_SESSION['user'])) {
+    header('Location: /');
+   }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +17,9 @@
     <style>
         .bgDEBTN{
             background-color: brown;
+        }
+        .RG{
+            background-color: #8B0000;
         }
         .positionTable{
             display: flex;
@@ -45,33 +57,37 @@
         <div class="bg-white shadow rounded-lg p-6">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">Mes cours</h2>
             <div class="positionTable">
-                <table class="fullWith bg-white border border-gray-300 rounded-lg ">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Titre</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Catégorie</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Créateur</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Étudiants</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Vues</th>
-                            <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Example Row -->
-                        <tr class="border-t border-gray-200">
-                            <td class="px-6 py-4 text-sm text-gray-800">UX Design Fundamentals</td>
-                            <td class="px-6 py-4 text-sm text-gray-800">Design</td>
-                            <td class="px-6 py-4 text-sm text-gray-800">Mike Johnson</td>
-                            <td class="px-6 py-4 text-sm text-gray-800">987</td>
-                            <td class="px-6 py-4 text-sm text-gray-800">1,234</td>
-                            <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
-                                <button class="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700">Details</button>
-                                <button class="bgDEBTN text-white px-3 py-1 rounded-md hover:bg-green-700">Enrolle</button>
-                            </td>
-                        </tr>
-                        <!-- Add more rows here -->
-                    </tbody>
-                </table>
+            <?php if (isset($data['courses']) && !empty($data['courses'])): ?>
+    <table class="w-full bg-white border border-gray-300 rounded-lg">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Titre</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Catégorie</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Créateur</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">description</th>
+              
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($courses as $course): ?>
+                <tr class="border-t border-gray-200">
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($course['titre']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($course['categorie']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($course['creator']) ?></td>
+                    <td class="px-6 py-4 text-sm text-gray-800"><?= htmlspecialchars($course['descriptioncour']) ?></td> 
+                    <td class="px-6 py-4 text-sm text-gray-800 space-x-2">
+                        <button class="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700"><a href="/details?id=<?= htmlspecialchars($course['idcour']) ?>">Details</a></button>
+                        <button class="RG text-white px-3 py-1 rounded-md hover:bg-green-700"><a href="/unroll?id=<?= htmlspecialchars($course['idcour']) ?>">Enroll</a></button>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p>No courses available.</p>
+<?php endif; ?>
+
             </div>
         </div>
     </div>

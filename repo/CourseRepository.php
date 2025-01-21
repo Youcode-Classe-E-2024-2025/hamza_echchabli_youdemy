@@ -57,9 +57,30 @@ class CourseRepository {
             return $e->getMessage();
         }
     }
+    public static function getStudentCourses($N) {
+        try {
+            $statement = DB::query(
+                "SELECT
+    co.idcour,
+    co.titrecour AS titre,
+    co.descriptioncour,
+    cat.name AS categorie,
+    u.name AS creator
+FROM public.enrollment e
+JOIN public.courses co ON e.course_id = co.idcour
+JOIN public.categorie cat ON co.categorie_id = cat.id
+JOIN public.users u ON co.user_id = u.id
+WHERE e.user_id = :id
+ORDER BY co.idcour;",
+                [':id' => $N]
+            );
 
-
-    public static function getByName($name) {
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+        public static function getByName($name) {
         try {
             $sql = "SELECT 
                         co.idcour, 

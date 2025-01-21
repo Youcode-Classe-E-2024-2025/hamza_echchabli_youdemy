@@ -104,6 +104,9 @@ class DashController {
             case 'teacher':
                 $this->teacherDashData();
                 break;
+            case 'student':
+                $this->studentDashData();
+                break;
             // Add other roles as needed
         }
     }
@@ -111,6 +114,33 @@ class DashController {
 
 
 
+  
+
+    
+
+
+    private function studentDashData(){
+        try{
+            $res = unserialize($_SESSION['user']);
+         $courses=self::$courseS->getStudentCourseById($res->getId());
+         
+        
+         $data = [
+     
+             'courses' =>$courses,
+        
+         ];
+ 
+         $this->DashView($data);
+     } catch (\Exception $e) {
+         $this->DashView(['message' => $e->getMessage()]);
+     }
+ 
+ 
+ 
+     }
+ 
+ 
 
     public function manageCourses()
 {

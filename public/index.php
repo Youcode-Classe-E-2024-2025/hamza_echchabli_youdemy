@@ -83,6 +83,28 @@ $router->addRoute('GET', 'Dash', function() {
 
 });
 
+$router->addRoute('GET', 'Dash', function() {
+    
+
+    $controller = new DashController();
+    $res = unserialize($_SESSION['user']);
+    
+   DashController::setRole($res->getRole());
+    $controller->getDash();
+
+});
+
+$router->addRoute('GET', 'unroll', function() {
+    
+
+    $controller = new detailsController();
+    $res = unserialize($_SESSION['user']);
+    
+     $controller->unroll($res->getId(), $_GET['id']);
+});
+
+// unroll
+
 
 
 // $router->addRoute('GET', 'courses', function() {

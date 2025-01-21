@@ -1,8 +1,13 @@
 <?php
 
-// echo ini_get('session.save_path');
+if (isset($_SESSION['user'])) {
+    header('Location: /');
+   }
+
 
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,9 +55,9 @@
             <div class="flex justify-between h-16 items-center">
                 <div class="text-2xl font-bold text-indigo-600">  <a href="/" class="text-2xl font-bold  text-slate-800">Youdemy</a></div>
                 <div class="hidden md:flex space-x-4">
-                    <a href="#" class="text-gray-600 hover:text-gray-900">Dashboard</a>
+                    <!-- <a href="#" class="text-gray-600 hover:text-gray-900">Dashboard</a>
                     <a href="#" class="text-gray-600 hover:text-gray-900">Utilisateurs</a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900">Statistiques</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Statistiques</a> -->
                 </div>
                 <div class="flex space-x-4">
                     <a href="handleAuth" class="text-indigo-600 hover:text-indigo-700">Logout</a>

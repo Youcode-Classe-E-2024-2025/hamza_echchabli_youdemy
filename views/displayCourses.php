@@ -95,11 +95,11 @@
     <nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
-                <div class="text-2xl font-bold text-slate-800">Youdemy</div>
+                <div class="text-2xl font-bold text-slate-800"><a href="/">Youdemy</a></div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Home</a>
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Teach</a>
-                    <a href="#" class="text-slate-600 hover:text-slate-900">Enterprise</a>
+                    <!-- <a href="#" class="text-slate-600 hover:text-slate-900">Home</a> -->
+                    <!-- <a href="#" class="text-slate-600 hover:text-slate-900">Teach</a>
+                    <a href="#" class="text-slate-600 hover:text-slate-900">Enterprise</a> -->
                 </div>
                 <div class="flex items-center gap-4">
                 <?php
