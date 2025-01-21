@@ -27,7 +27,7 @@ class EnrollmentRepository {
                 ':courseId' => $courseId
             ]);
 
-            $result = $statement->fetch(\PDO::FETCH_ASSOC);
+            $result= $statement->fetch(\PDO::FETCH_ASSOC);
             return $result['count'] > 0; // Returns true if enrolled, false otherwise
         } catch (\Exception $e) {
             return false;

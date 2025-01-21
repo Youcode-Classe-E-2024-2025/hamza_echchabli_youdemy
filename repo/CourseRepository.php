@@ -88,19 +88,24 @@ class CourseRepository {
             $statement = DB::query(
                 
                 "SELECT 
-                        co.idcour, 
-                        co.titrecour, 
-                        co.descriptioncour, 
-                        co.details, 
-                        cat.name AS categorie, 
-                        STRING_AGG(t.name, ', ') AS tags
-                    FROM public.courses co
-                    JOIN public.categorie cat ON co.categorie_id = cat.id
-                    LEFT JOIN public.course_tag ct ON co.idcour = ct.course_id
-                    LEFT JOIN public.tag t ON ct.tag_id = t.id
-                    WHERE co.idcour = :id
-                    GROUP BY co.idcour, co.titrecour, co.descriptioncour, co.details, cat.name
-                
+    co.idcour, 
+    co.titrecour, 
+    co.descriptioncour, 
+    co.contenucour, 
+    co.details, 
+    cat.name AS categorie, 
+    u.name AS creator, 
+    STRING_AGG(Distinct t.name, ',') AS tags,
+    COUNT(*) AS number -- Counting the number of users enrolled in the course
+FROM public.courses co
+JOIN public.categorie cat ON co.categorie_id = cat.id
+JOIN public.users u ON co.user_id = u.id
+LEFT JOIN public.course_tag ct ON co.idcour = ct.course_id
+LEFT JOIN public.tag t ON ct.tag_id = t.id
+LEFT JOIN public.enrollment en ON co.idcour = en.course_id -- Assuming `enrollment` is the table linking users to courses
+WHERE co.idcour = :id
+GROUP BY co.idcour, co.titrecour, co.descriptioncour,co.contenucour, co.details, cat.name, u.name
+
                 
                 ",
                 [':id' => $id]

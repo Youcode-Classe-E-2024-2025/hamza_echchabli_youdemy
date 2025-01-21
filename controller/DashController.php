@@ -209,7 +209,7 @@ public function addCourse()
         $tags = $_POST['course-tags'];
 
         // Directory to store course files
-        $uploadDir = '../uploads/courses/';
+        $uploadDir = '../public/uploads/courses/';
 
         // Ensure the upload directory exists
         if (!is_dir($uploadDir)) {

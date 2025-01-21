@@ -34,6 +34,14 @@ $router->addRoute('GET', 'details', function() {
      $controller->handleRequest();
 });
 
+// manageErollment
+
+$router->addRoute('GET', 'enrolle', function() {
+    $controller = new detailsController();
+
+     $controller->manageErollment();
+});
+
 $router->addRoute('GET', 'manage', function() {
 
     $controller = new DashController();

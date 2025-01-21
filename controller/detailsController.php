@@ -4,8 +4,11 @@ namespace Controller;
 
 use Service\CourseService;
 use Repo\EnrollmentRepository;
+use Service\EnrollmentService;
 
 class detailsController {
+
+
 
 
 
@@ -13,11 +16,48 @@ class detailsController {
             if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 $courseId = $_GET['id'];
                 $res = unserialize($_SESSION['user']);
+                $type='';
 
                 $course = CourseService::getCourseById($courseId) ;
-                $res = EnrollmentRepository::checkOne($courseId ,$res->getRole());
+                $res = EnrollmentRepository::checkOne($courseId ,$res->getId());
+                if (str_ends_with($course[0]['contenucour'], '.mp4')) {
+                    $type = 'mp4';
+                } elseif (str_ends_with($course[0]['contenucour'], '.md')) {
+                    $type = 'md';
+                } 
+
                 if ($res) {
+                    $content=null;
+                    if ($course && isset($course[0]['contenucour'])) {
+                        // Pass the video URL to the view
+                        $content = $course[0]['contenucour'];
+                        // echo$course[0]['contenucour'];
+
+                    
+                    } else {
+                        echo "Video content not found.";
+                    }
+
+
+
+                    $data =[
+                        'course' => $course,
+                        'videoPath'=>$content,
+                        'type' =>$type,
+                        'enroll' => 'enroll'
+                    ];
+
+                    $this->view($data);
+
+
                    
+                }else{
+                    $data =[
+                        'course' => $course,
+                        
+                    ];
+
+                    $this->view($data);
                 }
     
                
@@ -27,13 +67,29 @@ class detailsController {
         }
 
 
+   public function manageErollment(){
+
+    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+        $courseId = $_GET['id'];
+        $res = unserialize($_SESSION['user']);
+        $resut = EnrollmentService::enrollUser($res->getId() ,$courseId);
+         
+
+        header('Location: /details?id='.$courseId);
+        exit();
+        
 
 
-        private function view($view,  $courses = []) {
-            extract($courses);
+    }
+
+   }
+
+        private function view(  $data = []) {
+            extract($data);
     
-            include(__DIR__ . "/../views/" . $view . ".php");
+            include(__DIR__ . "/../views/coursDetails.php");
         }
+
 
 
 
