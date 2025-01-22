@@ -93,6 +93,116 @@
         .textColor{
             color: white;
         }
+
+        /* Container Styling */
+#create-course {
+    max-width: 900px;
+    margin: 20px auto;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 30px;
+    font-family: Arial, sans-serif;
+}
+
+/* Heading */
+#create-course h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2D3748;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #E2E8F0;
+    padding-bottom: 10px;
+}
+
+/* Form Layout */
+.grid {
+    display: grid;
+    gap: 20px;
+}
+
+/* Responsive Grid */
+@media (min-width: 640px) {
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+    .grid-cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Labels */
+label {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4A5568;
+    margin-bottom: 6px;
+}
+
+/* Input Fields */
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #CBD5E0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #2D3748;
+    background: #F7FAFC;
+    transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #4C51BF;
+    box-shadow: 0 0 5px rgba(76, 81, 191, 0.5);
+    outline: none;
+}
+
+/* Submit Button */
+#sendcourse {
+    display: inline-block;
+    background: #4C51BF;
+    color: #ffffff;
+    padding: 14px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+#sendcourse:hover {
+    background: #4338CA;
+}
+
+/* Tag Preview */
+#tag-preview p {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2D3748;
+}
+
+#tag-list {
+    font-weight: bold;
+    color: #4C51BF;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 640px) {
+    #create-course {
+        padding: 20px;
+    }
+    #sendcourse {
+        width: 100%;
+    }
+}
+
         footer{
             position: relative; /* Ensure it doesn't overlap */
             z-index: 1;
@@ -108,7 +218,7 @@
                 <div class="">
                 <a href="/" class="text-2xl font-bold  text-slate-800">Youdemy</a>
                 </div>
-                <div class="hidden md:flex space-x-8">
+                <div class=" md:flex space-x-8">
                     <a href="courses?page=0" class="text-slate-600 hover:text-slate-900">COURSES</a>
                     <!-- <a href="courses" class="text-slate-600 hover:text-slate-900">Teach</a> -->
                     <a href="Dash" class="text-slate-600 hover:text-slate-900">My DASHBOARD</a>
@@ -136,87 +246,84 @@
         <h1 class="text-3xl font-bold text-gray-900 mb-8">Teacher Dashboard</h1>
 
         <!-- Add New Course Section -->
-        <div id="create-course" class="bg-white shadow rounded-lg p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Ajouter un Nouveau Cours</h2>
-<form id="coursAddContent" action="/manageCourses" method="POST" enctype="multipart/form-data">
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <input name="action" value="add" hidden>
-        <div>
-            <label for="course-title" class="block text-sm font-medium text-gray-700">Titre du Cours</label>
-            <input type="text" id="course-title" name="course-title" class="mt-1 block w-full p-2 border rounded-lg" required>
+        <div id="create-course" class="bg-white shadow rounded-lg p-6 mb-8"><div id="create-course">
+    <h2>Ajouter un Nouveau Cours</h2>
+    <form id="coursAddContent" action="/manageCourses" method="POST" enctype="multipart/form-data">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <input name="action" value="add" hidden>
+            
+            <div>
+                <label for="course-title">Titre du Cours</label>
+                <input type="text" id="course-title" name="course-title" required>
+            </div>
+
+            <div>
+                <label for="course-category">Catégorie</label>
+                <select id="course-category" name="course-category">
+                    <?php if (is_array($categories)): ?>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo $category->getId(); ?>"><?php echo htmlspecialchars($category->getName()); ?></option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option disabled>No categories found</option>
+                    <?php endif; ?>
+                </select>
+            </div>
+
+            <div class="sm:col-span-2">
+                <label for="course-description">Description</label>
+                <textarea id="course-description" name="course-description" rows="4" required></textarea>
+            </div>
+
+            <div class="sm:col-span-2">
+                <label for="course-tags">Tags</label>
+                <select id="course-tags" required onchange="updateTagPreview()">
+                    <option value="" disabled selected>Select a tag</option>
+                    <?php if (is_array($tags)): ?>
+                        <?php foreach ($tags as $tag): ?>
+                            <option value="<?php echo $tag->getId(); ?>" data-name="<?php echo htmlspecialchars($tag->getName()); ?>">
+                                <?php echo htmlspecialchars($tag->getName()); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <option disabled>No tags available</option>
+                    <?php endif; ?>
+                </select>
+            </div>
+
+            <div id="tag-preview" class="sm:col-span-2 mt-2">
+                <p>Tags preview: <span id="tag-list"></span></p>
+                <input type="text" id="courseTags" name="course-tags" readonly hidden>
+            </div>
+
+            <div>
+                <label for="chooseType">Type de Contenu</label>
+                <select id="chooseType" onchange="toggleContentType()">
+                    <option value="video">Vidéo</option>
+                    <option value="document">Document</option>
+                </select>
+            </div>
+
+            <div class="sm:col-span-2 hidden" id="video-content">
+                <label for="course-content">Contenu Vidéo</label>
+                <input type="file" id="course-content" name="course-content" accept="video/*">
+            </div>
+
+            <input id="editorContent" type="hidden" name="md">
+
+            <div id="text-editor" class="sm:col-span-2 mb-4">
+                <label for="description">Contenu Texte</label>
+                <textarea id="description"></textarea>
+            </div>
         </div>
-        <!-- <div>
-            <label for="course-category" class="block text-sm font-medium text-gray-700">Catégorie</label>
-            <select id="course-category" name="course-category" class="mt-1 block w-full p-2 border rounded-lg">
-                <option value="design">Design</option>
-                <option value="development">Development</option>
-                <option value="data-science">Data Science</option>
-            </select>
-        </div> -->
 
-        <div>
-    <label for="course-category" class="block text-sm font-medium text-gray-700">Catégorie</label>
-    <select id="course-category" name="course-category" class="mt-1 block w-full p-2 border rounded-lg">
-        <?php if (is_array($categories)): ?>
-            <?php foreach ($categories as $category): ?>
-                <option value="<?php echo $category->getId(); ?>"><?php echo htmlspecialchars($category->getName()); ?></option>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <option disabled>No categories found</option>
-        <?php endif; ?>
-    </select>
-</div>
-        <div class="sm:col-span-2">
-            <label for="course-description" class="block text-sm font-medium text-gray-700">Description</label>
-            <textarea id="course-description" name="course-description" rows="4" class="mt-1 block w-full p-1 border rounded-lg" required></textarea>
-        </div>
-        <div class="sm:col-span-2">
-    <label for="course-tags" class="block text-sm font-medium text-gray-700">Tags</label>
-    <select id="course-tags" class="mt-1 block w-full p-2 border rounded-lg" required onchange="updateTagPreview()">
-        <option value="" disabled selected>Select a tag</option>
-        <?php if (is_array($tags)): ?>
-            <?php foreach ($tags as $tag): ?>
-                <option value="<?php echo $tag->getId(); ?>" data-name="<?php echo htmlspecialchars($tag->getName()); ?>">
-                    <?php echo htmlspecialchars($tag->getName()); ?>
-                </option>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <option disabled>No tags available</option>
-        <?php endif; ?>
-    </select>
+        <button id="sendcourse" type="submit">
+            Ajouter le Cours
+        </button>
+    </form>
 </div>
 
-<!-- Tag Preview Section -->
-<div id="tag-preview" class="sm:col-span-2 mt-2">
-    <p class="text-lg text-black">Tags preview: <span id="tag-list"></span></p>
-    <input type="text" id="courseTags" name="course-tags" class="mt-1 block w-full p-2 border rounded-lg" readonly hidden>
-</div>
-        <!-- <div class="sm:col-span-2">
-            <label for="course-tags" class="block text-sm font-medium text-gray-700">Tags</label>
-            <input type="text" id="course-tags" name="course-tags" class="mt-1 block w-full p-2 border rounded-lg" hidden>
-        </div>  -->
-        <select id="chooseType" onchange="toggleContentType()">
-    <option value="video">Video</option>
-    <option value="document">Document</option>
-</select>
-
-<!-- Video Content Input -->
-<div class="sm:col-span-2" id="video-content" class="hidden">
-    <label for="course-content" class="block text-sm font-medium text-gray-700">Contenu Video</label>
-    <input type="file" id="course-content" name="course-content" class="mt-1 block w-full p-2 border rounded-lg" accept="video/*" >
-</div>
-<input id="editorContent" type="hidden" name="md">
-
-<div  id="text-editor" class=" mb-4">
-    <label for="description" class="block text-sm font-medium text-gray-700">Contenu Texte</label>
-    <textarea id="description" ></textarea>
-</div>
-
-    </div>
-    <button id="sendcourse" type="submit" class="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700">
-        Ajouter le Cours
-    </button>
-</form>
+  
 
         </div>
 

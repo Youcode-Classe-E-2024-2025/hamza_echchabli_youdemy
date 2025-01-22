@@ -3,13 +3,13 @@
 namespace Entity;
 
 abstract  class User {
-    private int $id;
-    private string $name;
-    private string $email;
-    private string $password;
-    private string $role;
-    private int $state;
-    private int $banned;
+    protected int $id;
+    protected string $name;
+    protected string $email;
+    protected string $password;
+    protected string $role;
+    protected int $state;
+    protected int $banned;
 
     public function __construct(int $id, string $name, string $email, string $password, string $role, int $state, int $banned) {
         $this->id = $id;

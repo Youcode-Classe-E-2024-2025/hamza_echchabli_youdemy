@@ -1,11 +1,11 @@
-<?php
+<!-- <?php
 
-if (isset($_SESSION['user'])) {
-    header('Location: /');
-   }
+// if (isset($_SESSION['user'])) {
+//     header('Location: /');
+//    }
 
 
-?>
+?> -->
 
 
 
@@ -34,6 +34,7 @@ if (isset($_SESSION['user'])) {
         .mA-1{
             margin: 4px;
         }
+        
         .card {
             padding: 1.5rem;
             border-radius: 0.5rem;
@@ -48,7 +49,7 @@ if (isset($_SESSION['user'])) {
         }
     </style>
 </head>
-<body class="min-h-screen bg-gray-50">
+<body class="min-h-screen bg-gray-50 ">
     <!-- Navigation -->
     <nav class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

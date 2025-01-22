@@ -1,11 +1,11 @@
 <?php
 
 // var_dump($data);
-if (isset($_SESSION['user'])) {
-    header('Location: /');
-   }
+// if (isset($_SESSION['user'])) {
+//     header('Location: /');
+//    }
 
-?>
+// ?>
 
 <!DOCTYPE html>
 <html lang="en">
